@@ -11,6 +11,8 @@ namespace DerbyRoyale.Vehicles
     {
         #region CONSTANTS
         private const float DEFAULT_ACCELERATION = 1500f;
+        private const float DEFAULT_DRAG = 0.8f;
+        private const float SLIPPERY_DRAG = 0.25f;
         private const float TURN_RATE = 20f;
         private const float MAXIMUM_VELOCITY = 100f;
 
@@ -20,6 +22,7 @@ namespace DerbyRoyale.Vehicles
         private const float DEFAULT_HEALTH = 1f;
         private const float BOOST_MULTIPLIER = 1.5f;
         private const float ARMOR_MULTIPLIER = 0.5f;
+        private const float TEMPORARY_SLIP_DURATION = 3f;
 
         private const float TRASHED_DESTRUCTION_DELAY = 3f;
         private const float TRASHED_EXPLOSION_FORCE = 1000f;
@@ -29,7 +32,7 @@ namespace DerbyRoyale.Vehicles
 
         #region PROPERTIES
         private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); }
-        private Vector3 forwardAcceleration { get => transform.forward * DEFAULT_ACCELERATION * Time.deltaTime; }
+        private Vector3 forwardAcceleration { get => ((transform.forward * DEFAULT_ACCELERATION) * vehicleController.acceleration) * Time.deltaTime; }
         private Vector3 rightTurning { get => (((transform.up * vehicleController.turning) * TURN_RATE) * Mathf.Lerp(0f, TURN_RATE, rigidBody.velocity.magnitude / MAXIMUM_VELOCITY))* Time.deltaTime; }
 
         private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); }
@@ -38,9 +41,10 @@ namespace DerbyRoyale.Vehicles
         public float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); set { m_CurrentHealth = Mathf.Clamp01(value); } }
         public bool hasMaxHealth { get => currentHealth == 1f; }
         public bool isTrashed { get => currentHealth == 0f; }
-        public bool isBoosting { get; set; }
-        public bool isArmored { get; set; }
+        public bool isBoosting { get; private set; }
+        public bool isArmored { get; private set; }
         public bool isGrounded { get => RefreshFloorDetection(); }
+        public bool isSlipping { get; private set; }
         #endregion
 
 
@@ -80,26 +84,10 @@ namespace DerbyRoyale.Vehicles
         public void RestartCar()
         {
             currentHealth = DEFAULT_HEALTH;
+            rigidBody.drag = DEFAULT_DRAG;
             isBoosting = false;
             isArmored = false;
-        }
-
-        public void AccelerateCar()
-        {
-            if (isBoosting)
-            {
-                rigidBody.AddForce(forwardAcceleration * BOOST_MULTIPLIER, ForceMode.Acceleration);
-            }
-            else
-            {
-                rigidBody.AddForce(forwardAcceleration, ForceMode.Acceleration);
-            }
-        }
-
-        public void TurnCar()
-        {
-            Quaternion deltaRotation = Quaternion.Euler(rightTurning);
-            rigidBody.MoveRotation(rigidBody.rotation * deltaRotation);
+            isSlipping = false;
         }
 
         public void DamageCar(float damageAmount)
@@ -119,14 +107,14 @@ namespace DerbyRoyale.Vehicles
             }
         }
 
-        public void HealCar(float healingAmount)
+        public void RepairCar(float repairAmount)
         {
             if (isTrashed)
             {
                 return;
             }
 
-            currentHealth += healingAmount;
+            currentHealth += repairAmount;
         }
 
         public void BoostCar(float boostDuration)
@@ -152,6 +140,22 @@ namespace DerbyRoyale.Vehicles
             if (!isArmored)
             {
                 RunArmorTimer(armorDuration);
+            }
+        }
+
+        public void SlipCar()
+        {
+            if (!isSlipping)
+            {
+                RunSlippingTimer(TEMPORARY_SLIP_DURATION);
+            }
+        }
+
+        public void SlipCar(float slippingDuration)
+        {
+            if (!isSlipping)
+            {
+                RunSlippingTimer(slippingDuration);
             }
         }
 
@@ -184,6 +188,24 @@ namespace DerbyRoyale.Vehicles
             {
                 TurnCar();
             }
+        }
+
+        void AccelerateCar()
+        {
+            if (isBoosting)
+            {
+                rigidBody.AddForce(forwardAcceleration * BOOST_MULTIPLIER, ForceMode.Acceleration);
+            }
+            else
+            {
+                rigidBody.AddForce(forwardAcceleration, ForceMode.Acceleration);
+            }
+        }
+
+        void TurnCar()
+        {
+            Quaternion deltaRotation = Quaternion.Euler(rightTurning);
+            rigidBody.MoveRotation(rigidBody.rotation * deltaRotation);
         }
 
         bool RefreshFloorDetection()
@@ -223,6 +245,15 @@ namespace DerbyRoyale.Vehicles
         {
             yield return new WaitForSeconds(TRASHED_DESTRUCTION_DELAY);
             Destroy(gameObject);
+        }
+
+        IEnumerator RunSlippingTimer(float slippingDuration)
+        {
+            isSlipping = true;
+            rigidBody.drag = SLIPPERY_DRAG;
+            yield return new WaitForSeconds(slippingDuration);
+            rigidBody.drag = DEFAULT_DRAG;
+            isSlipping = false;
         }
         #endregion
     }
