@@ -9,8 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640762917404780}
-  - component: {fileID: 305640762917404781}
   - component: {fileID: 305640762917404778}
+  - component: {fileID: 7813141512194283658}
+  - component: {fileID: 31262542809511882}
   m_Layer: 0
   m_Name: Stage 3
   m_TagString: Untagged
@@ -33,23 +34,6 @@ Transform:
   m_Father: {fileID: 305640763693598253}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &305640762917404781
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305640762917404783}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119ca129378cd9e41a006269156783b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StageParameters:
-    m_StageTimeout: 10
-    m_StageCompleteTimeout: 10
-    m_StageDestroyTimeout: 10
-  m_Animator: {fileID: 305640762917404778}
 --- !u!95 &305640762917404778
 Animator:
   serializedVersion: 3
@@ -69,6 +53,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7813141512194283658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640762917404783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398cb4a8810826a42a0d205132d43b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StageParameters:
+    m_StageTimeout: 10
+    m_StageCompleteTimeout: 10
+    m_StageDestroyTimeout: 10
+--- !u!114 &31262542809511882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640762917404783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ac30876822803459d69c19e516884e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 305640762917404778}
 --- !u!1 &305640763052115091
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,8 +91,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640763052115088}
-  - component: {fileID: 305640763052115089}
   - component: {fileID: 305640763052115102}
+  - component: {fileID: 1524212685806814134}
+  - component: {fileID: 518593313233366633}
   m_Layer: 0
   m_Name: Stage 2
   m_TagString: Untagged
@@ -102,23 +116,6 @@ Transform:
   m_Father: {fileID: 305640763693598253}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &305640763052115089
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305640763052115091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119ca129378cd9e41a006269156783b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StageParameters:
-    m_StageTimeout: 10
-    m_StageCompleteTimeout: 10
-    m_StageDestroyTimeout: 10
-  m_Animator: {fileID: 305640763052115102}
 --- !u!95 &305640763052115102
 Animator:
   serializedVersion: 3
@@ -138,6 +135,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1524212685806814134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763052115091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398cb4a8810826a42a0d205132d43b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StageParameters:
+    m_StageTimeout: 10
+    m_StageCompleteTimeout: 10
+    m_StageDestroyTimeout: 10
+--- !u!114 &518593313233366633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763052115091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ac30876822803459d69c19e516884e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 305640763052115102}
 --- !u!1 &305640763053964996
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,8 +173,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640763053964997}
-  - component: {fileID: 305640763053964994}
   - component: {fileID: 305640763053964995}
+  - component: {fileID: 1405886041306591570}
+  - component: {fileID: 971803424364160821}
   m_Layer: 0
   m_Name: Stage 4
   m_TagString: Untagged
@@ -171,23 +198,6 @@ Transform:
   m_Father: {fileID: 305640763693598253}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &305640763053964994
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305640763053964996}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119ca129378cd9e41a006269156783b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StageParameters:
-    m_StageTimeout: 10
-    m_StageCompleteTimeout: 10
-    m_StageDestroyTimeout: 10
-  m_Animator: {fileID: 305640763053964995}
 --- !u!95 &305640763053964995
 Animator:
   serializedVersion: 3
@@ -207,6 +217,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1405886041306591570
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763053964996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398cb4a8810826a42a0d205132d43b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StageParameters:
+    m_StageTimeout: 0
+    m_StageCompleteTimeout: 0
+    m_StageDestroyTimeout: 0
+--- !u!114 &971803424364160821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763053964996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1568de7e3f674949926bd64a342cc1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 305640763053964995}
 --- !u!1 &305640763200507083
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,8 +593,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640763545470835}
-  - component: {fileID: 305640763545470832}
   - component: {fileID: 305640763545470833}
+  - component: {fileID: 5328564410868519626}
+  - component: {fileID: 5747909773634207754}
   m_Layer: 0
   m_Name: Stage 1
   m_TagString: Untagged
@@ -578,23 +618,6 @@ Transform:
   m_Father: {fileID: 305640763693598253}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &305640763545470832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 305640763545470834}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 119ca129378cd9e41a006269156783b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_StageParameters:
-    m_StageTimeout: 10
-    m_StageCompleteTimeout: 10
-    m_StageDestroyTimeout: 10
-  m_Animator: {fileID: 305640763545470833}
 --- !u!95 &305640763545470833
 Animator:
   serializedVersion: 3
@@ -614,6 +637,35 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &5328564410868519626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763545470834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 398cb4a8810826a42a0d205132d43b13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StageParameters:
+    m_StageTimeout: 10
+    m_StageCompleteTimeout: 10
+    m_StageDestroyTimeout: 10
+--- !u!114 &5747909773634207754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 305640763545470834}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62ac30876822803459d69c19e516884e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Animator: {fileID: 305640763545470833}
 --- !u!1 &305640763597709290
 GameObject:
   m_ObjectHideFlags: 0
@@ -755,10 +807,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Stages:
-  - {fileID: 305640763545470832}
-  - {fileID: 305640763052115089}
-  - {fileID: 305640762917404781}
-  - {fileID: 305640763053964994}
+  - {fileID: 5328564410868519626}
+  - {fileID: 1524212685806814134}
+  - {fileID: 7813141512194283658}
+  - {fileID: 1405886041306591570}
 --- !u!1 &305640763905002424
 GameObject:
   m_ObjectHideFlags: 0
