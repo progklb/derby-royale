@@ -5,7 +5,7 @@ namespace DerbyRoyale.Vehicles
     public sealed class FloorDetectionComponent : MonoBehaviour
     {
         #region CONSTANTS
-        private const float DETECTION_DISTANCE = 50f;
+        private const float DETECTION_DISTANCE = 0.25f;
         #endregion
 
 

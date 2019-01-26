@@ -66,6 +66,15 @@ namespace DerbyRoyale.Vehicles
         void FixedUpdate()
         {
             CarEngine();
+
+            if (isGrounded)
+            {
+                Debug.Log("Car is on the ground. . .");
+            }
+            else
+            {
+                Debug.LogWarning("Car has no wheels on the ground!");
+            }
         }
 
         void OnCollisionEnter(Collision col)
@@ -85,11 +94,6 @@ namespace DerbyRoyale.Vehicles
 
         public void AccelerateCar()
         {
-            if (isTrashed || !isGrounded)
-            {
-                return;
-            }
-
             if (isBoosting)
             {
                 rigidBody.AddForce(forwardAcceleration * BOOST_MULTIPLIER, ForceMode.Acceleration);
@@ -98,33 +102,15 @@ namespace DerbyRoyale.Vehicles
             {
                 rigidBody.AddForce(forwardAcceleration, ForceMode.Acceleration);
             }
-
-            if (isTrashed)
-            {
-                TrashCar();
-            }
         }
 
         public void TurnCar()
         {
-            if (isTrashed || !isGrounded)
-            {
-                return;
-            }
-
-            if (vehicleController.acceleration != 0f)
-            {
-                rigidBody.AddTorque(rightTurningTorque, ForceMode.Force);
-            }
+            rigidBody.AddTorque(rightTurningTorque, ForceMode.Force);
         }
 
         public void DamageCar(float damageAmount)
         {
-            if (isTrashed)
-            {
-                return;
-            }
-
             if (isArmored)
             {
                 currentHealth -= damageAmount * ARMOR_MULTIPLIER;
@@ -191,7 +177,7 @@ namespace DerbyRoyale.Vehicles
         #region HELPER FUNCTIONS
         void CarEngine()
         {
-            if (isTrashed)
+            if (isTrashed || !isGrounded)
             {
                 return;
             }
@@ -209,17 +195,15 @@ namespace DerbyRoyale.Vehicles
 
         bool RefreshFloorDetection()
         {
-            bool anyAreGrounded = false;
-
             foreach(FloorDetectionComponent detection in floorDetectionComponents)
             {
                 if (detection.isGrounded)
                 {
-                    anyAreGrounded = true;
+                    return true;
                 }
             }
 
-            return anyAreGrounded;
+            return false;
         }
 
         void CrashCar(Collision collision)
