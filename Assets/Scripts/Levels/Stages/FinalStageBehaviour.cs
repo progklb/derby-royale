@@ -18,8 +18,8 @@ namespace DerbyRoyale.Levels
 
 			animator.SetTrigger(STAGE_BEGIN_TRIGGER);
 			RaiseStageProgressChanged(StageProgress.Begin);
-			yield return new WaitForSeconds(stage.parameters.stageTimeout);
 
+			yield return null;
 		}
 		#endregion
 	}

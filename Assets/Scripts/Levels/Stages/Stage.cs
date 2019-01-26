@@ -14,36 +14,17 @@ namespace DerbyRoyale.Levels
 		#endregion
 
 
-		#region TYPES
-		[Serializable]
-		public class StageParameters
-		{
-			public float stageTimeout { get => m_StageTimeout; }
-			public float stageCompleteTimeout { get => m_StageCompleteTimeout; }
-			public float stageDestroyTimeout { get => m_StageDestroyTimeout; }
-
-			/// Amount of time that the stage will last for.
-			[SerializeField] private float m_StageTimeout;
-			/// Amount of time to wait for the stage complete sequence to finish (approach the next tier)
-			[SerializeField] private float m_StageCompleteTimeout;
-			/// Amount of time after the stage ends until the stage self-destructs.
-			[SerializeField] private float m_StageDestroyTimeout;
-		}
-		#endregion
-
-
 		#region PROPERTIES
-		/// Defines the parameters this stage.
-		public StageParameters parameters { get => m_StageParameters; }
-
 		public int stageNumber { get; set; }
+		public Transform[] spawnPoints { get => m_SpawnPoints; }
+
 
 		private StageBehaviour stageBehaviour { get; set; }
 		#endregion
 
 
 		#region EDITOR FIELDS
-		[SerializeField] private StageParameters m_StageParameters;
+		[SerializeField] private Transform[] m_SpawnPoints;
 		#endregion
 
 
@@ -62,7 +43,7 @@ namespace DerbyRoyale.Levels
 			}
 		}
 
-		void OnDisabel()
+		void OnDisable()
 		{
 			if (stageBehaviour != null)
 			{
