@@ -21,6 +21,8 @@ namespace DerbyRoyale.Vehicles
         private const float ARMOR_MULTIPLIER = 0.5f;
 
         private const float TRASHED_DESTRUCTION_DELAY = 3f;
+        private const float TRASHED_EXPLOSION_FORCE = 1000f;
+        private const float TRASHED_EXPLOSION_RADIUS = 200f;
         #endregion
 
 
@@ -159,10 +161,10 @@ namespace DerbyRoyale.Vehicles
         public void TrashCar()
         {
             currentHealth = 0f;
-
             isBoosting = false;
             isArmored = false;
 
+            rigidBody.AddExplosionForce(TRASHED_EXPLOSION_FORCE, transform.position, TRASHED_EXPLOSION_RADIUS, 1.5f, ForceMode.Impulse);
             RunDestructionTimer();
         }
         #endregion
