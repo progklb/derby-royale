@@ -9,12 +9,6 @@ namespace DerbyRoyale.Levels
 	/// </summary>
 	public class LevelController : MonoBehaviour
 	{
-		#region EVENT
-		/// Is raised when the level is completed.
-		public static event Action onLevelCompleted = delegate { };
-		#endregion
-
-
 		#region PROPERTIES
 		public int currentStageIndex { get; private set; }
 		public Stage currentStage { get => m_Stages[currentStageIndex]; }

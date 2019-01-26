@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DerbyRoyale
+namespace DerbyRoyale.Development
 {
 	public class DebugTimeScale : MonoBehaviour
 	{
@@ -13,7 +13,7 @@ namespace DerbyRoyale
 				{
 					Time.timeScale = 1f;
 				}
-				else if (Input.GetKey(KeyCode.Alpha2))
+				else if (Input.GetKey(KeyCode.Alpha2)) 
 				{
 					Time.timeScale = 3f;
 				}
