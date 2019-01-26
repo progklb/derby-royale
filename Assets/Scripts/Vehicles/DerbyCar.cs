@@ -3,7 +3,7 @@
 namespace DerbyRoyal.Vehicles
 {
     [RequireComponent(typeof(Rigidbody), typeof(MeshCollider), typeof(MeshRenderer))]
-    [RequireComponent(typeof(VehicleController))]
+    [RequireComponent(typeof(VehicleController), typeof (MeshFilter))]
     [AddComponentMenu("Derby Royal/Vehicles/Derby Car")]
     public class DerbyCar : MonoBehaviour
     {
@@ -55,6 +55,14 @@ namespace DerbyRoyal.Vehicles
         #endregion
 
 
+        #region UNITY EVENTS
+        void FixedUpdate()
+        {
+            CarEngine();
+        }
+        #endregion
+
+
         #region PUBLIC API
         public void AccelerateCar()
         {
@@ -77,6 +85,22 @@ namespace DerbyRoyal.Vehicles
             else
             {
                 rigidBody.AddRelativeTorque(rightTurningTorque);
+            }
+        }
+        #endregion
+
+
+        #region HELPER FUNCTIONS
+        void CarEngine()
+        {
+            if (vehicleController.isAccelerating)
+            {
+                AccelerateCar();
+            }
+
+            if (vehicleController.isTurning)
+            {
+                TurnCar();
             }
         }
         #endregion
