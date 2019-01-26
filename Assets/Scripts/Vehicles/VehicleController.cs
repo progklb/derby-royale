@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace DerbyRoyal.Vehicles
+namespace DerbyRoyale.Vehicles
 {
-    [AddComponentMenu("Derby Royal/Vehicles/Vehicle Controller")]
+    [AddComponentMenu("Derby Royale/Vehicles/Vehicle Controller")]
     public class VehicleController : MonoBehaviour
     {
         #region PROPERTIES
