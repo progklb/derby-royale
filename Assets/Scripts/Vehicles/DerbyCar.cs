@@ -13,6 +13,9 @@ namespace DerbyRoyale.Vehicles
         private const float DEFAULT_ACCELERATION = 1000f;
         private const float TURN_RATE = 5f;
 
+        private const float MAXIMUM_CRASH_VELOCITY = 1000f;
+        private const float MAXIMUM_CRASH_DAMAGE = 0.5f;
+
         private const float DEFAULT_HEALTH = 1f;
         private const float BOOST_MULTIPLIER = 1.5f;
         private const float ARMOR_MULTIPLIER = 0.5f;
@@ -38,7 +41,6 @@ namespace DerbyRoyale.Vehicles
         #region VARIABLES
         private Rigidbody m_RigidBody;
         private VehicleController m_VehicleController;
-
         private float m_CurrentHealth;
         #endregion
 
@@ -52,6 +54,11 @@ namespace DerbyRoyale.Vehicles
         void FixedUpdate()
         {
             CarEngine();
+        }
+
+        void OnCollisionEnter(Collision col)
+        {
+            CrashCar(col);
         }
         #endregion
 
@@ -109,7 +116,7 @@ namespace DerbyRoyale.Vehicles
 
             if (isTrashed)
             {
-
+                TrashCar();
             }
         }
 
@@ -178,6 +185,12 @@ namespace DerbyRoyale.Vehicles
             {
                 TurnCar();
             }
+        }
+
+        void CrashCar(Collision collision)
+        {
+            float crashDamage = Mathf.Clamp01(collision.relativeVelocity.magnitude / MAXIMUM_CRASH_VELOCITY);
+            DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE, crashDamage));
         }
 
         IEnumerator RunBoostTimer(float boostDuration)
