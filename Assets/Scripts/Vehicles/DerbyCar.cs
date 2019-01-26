@@ -10,8 +10,9 @@ namespace DerbyRoyale.Vehicles
     public sealed class DerbyCar : MonoBehaviour
     {
         #region CONSTANTS
-        private const float DEFAULT_ACCELERATION = 1000f;
-        private const float TURN_RATE = 2.5f;
+        private const float DEFAULT_ACCELERATION = 1500f;
+        private const float TURN_RATE = 20f;
+        private const float MAXIMUM_VELOCITY = 100f;
 
         private const float MAXIMUM_CRASH_VELOCITY = 1000f;
         private const float MAXIMUM_CRASH_DAMAGE = 0.5f;
@@ -29,7 +30,7 @@ namespace DerbyRoyale.Vehicles
         #region PROPERTIES
         private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); }
         private Vector3 forwardAcceleration { get => transform.forward * DEFAULT_ACCELERATION * Time.deltaTime; }
-        private Vector3 rightTurningTorque { get => transform.up * (vehicleController.turning * TURN_RATE * Time.deltaTime); }
+        private Vector3 rightTurning { get => (((transform.up * vehicleController.turning) * TURN_RATE) * Mathf.Lerp(0f, TURN_RATE, rigidBody.velocity.magnitude / MAXIMUM_VELOCITY))* Time.deltaTime; }
 
         private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); }
         private FloorDetectionComponent[] floorDetectionComponents { get => m_FloorDetectionComponents; }
@@ -66,15 +67,6 @@ namespace DerbyRoyale.Vehicles
         void FixedUpdate()
         {
             CarEngine();
-
-            if (isGrounded)
-            {
-                Debug.Log("Car is on the ground. . .");
-            }
-            else
-            {
-                Debug.LogWarning("Car has no wheels on the ground!");
-            }
         }
 
         void OnCollisionEnter(Collision col)
@@ -106,7 +98,8 @@ namespace DerbyRoyale.Vehicles
 
         public void TurnCar()
         {
-            rigidBody.AddTorque(rightTurningTorque, ForceMode.Force);
+            Quaternion deltaRotation = Quaternion.Euler(rightTurning);
+            rigidBody.MoveRotation(rigidBody.rotation * deltaRotation);
         }
 
         public void DamageCar(float damageAmount)
