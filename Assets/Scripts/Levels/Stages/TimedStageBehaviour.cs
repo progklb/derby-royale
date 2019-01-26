@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace DerbyRoyale.Levels
 {
-	public class GenericStageBehaviour : StageBehaviour
+	public class TimedStageBehaviour : StageBehaviour
 	{
 		#region CONSTANTS
 		public const string STAGE_BEGIN_TRIGGER = "StageBegin";
