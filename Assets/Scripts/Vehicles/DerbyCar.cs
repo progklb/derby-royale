@@ -7,11 +7,11 @@ namespace DerbyRoyale.Vehicles
     [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer), typeof(MeshFilter))]
     [RequireComponent(typeof(VehicleController))]
     [AddComponentMenu("Derby Royale/Vehicles/Derby Car")]
-    public class DerbyCar : MonoBehaviour
+    public sealed class DerbyCar : MonoBehaviour
     {
         #region CONSTANTS
         private const float DEFAULT_ACCELERATION = 1000f;
-        private const float TURN_RATE = 5f;
+        private const float TURN_RATE = 2.5f;
 
         private const float MAXIMUM_CRASH_VELOCITY = 1000f;
         private const float MAXIMUM_CRASH_DAMAGE = 0.5f;
@@ -32,11 +32,21 @@ namespace DerbyRoyale.Vehicles
         private Vector3 rightTurningTorque { get => transform.up * (vehicleController.turning * TURN_RATE * Time.deltaTime); }
 
         private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); }
+        private FloorDetectionComponent[] floorDetectionComponents { get => m_FloorDetectionComponents; }
 
-        private float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); set { m_CurrentHealth = Mathf.Clamp01(value); } }
-        private bool isTrashed { get => currentHealth == 0f; }
-        private bool isBoosting { get; set; }
-        private bool isArmored { get; set; }
+        public float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); set { m_CurrentHealth = Mathf.Clamp01(value); } }
+        public bool hasMaxHealth { get => currentHealth == 1f; }
+        public bool isTrashed { get => currentHealth == 0f; }
+        public bool isBoosting { get; set; }
+        public bool isArmored { get; set; }
+        public bool isGrounded { get => RefreshFloorDetection(); }
+        #endregion
+
+
+        #region EDITOR FIELDS
+        [Space(3), Header("DERBY CAR SETUP"), Space(5)]
+        [SerializeField]
+        private FloorDetectionComponent[] m_FloorDetectionComponents;
         #endregion
 
 
@@ -75,7 +85,7 @@ namespace DerbyRoyale.Vehicles
 
         public void AccelerateCar()
         {
-            if (isTrashed)
+            if (isTrashed || !isGrounded)
             {
                 return;
             }
@@ -97,7 +107,15 @@ namespace DerbyRoyale.Vehicles
 
         public void TurnCar()
         {
-            rigidBody.AddTorque(rightTurningTorque, ForceMode.Force);
+            if (isTrashed || !isGrounded)
+            {
+                return;
+            }
+
+            if (vehicleController.acceleration != 0f)
+            {
+                rigidBody.AddTorque(rightTurningTorque, ForceMode.Force);
+            }
         }
 
         public void DamageCar(float damageAmount)
@@ -187,6 +205,21 @@ namespace DerbyRoyale.Vehicles
             {
                 TurnCar();
             }
+        }
+
+        bool RefreshFloorDetection()
+        {
+            bool anyAreGrounded = false;
+
+            foreach(FloorDetectionComponent detection in floorDetectionComponents)
+            {
+                if (detection.isGrounded)
+                {
+                    anyAreGrounded = true;
+                }
+            }
+
+            return anyAreGrounded;
         }
 
         void CrashCar(Collision collision)
