@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 
-using System;
+using DerbyRoyale.Gameplay;
+
+using URandom = UnityEngine.Random;
 
 namespace DerbyRoyale.Levels
 {
@@ -23,8 +25,9 @@ namespace DerbyRoyale.Levels
 		#region UNITY EVENTS
 		void Start()
 		{
+			LevelManager.instance.RegisterController(this);
+
 			Stage.onStageProgressChanged += HandleStageProgressChanged;
-			// TODO Have a way of listening for house occupation.
 
 			for (int i = 0; i < m_Stages.Length; ++i)
 			{
@@ -36,6 +39,8 @@ namespace DerbyRoyale.Levels
 
 		void OnDestroy()
 		{
+			LevelManager.instance?.DeregisterController(this);
+
 			Stage.onStageProgressChanged -= HandleStageProgressChanged;
 		}
 		#endregion
