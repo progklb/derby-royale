@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
+using System;
 using System.Collections;
+
+using URandom = UnityEngine.Random;
 
 namespace DerbyRoyale.Vehicles
 {
@@ -32,11 +35,17 @@ namespace DerbyRoyale.Vehicles
         private const float TRASHED_DESTRUCTION_DELAY = 3f;
         private const float TRASHED_EXPLOSION_FORCE = 10f;
         private const float TRASHED_EXPLOSION_RADIUS = 5f;
-        #endregion
+		#endregion
 
 
-        #region PROPERTIES
-        private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); }
+		#region EVENTS
+		public static event Action<DerbyCar> onSpawn = delegate { };
+		public static event Action<DerbyCar> onDeath = delegate { };
+		#endregion
+
+
+		#region PROPERTIES
+		private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); }
         private Vector3 forwardAcceleration { get => ((transform.forward * DEFAULT_ACCELERATION) * vehicleController.acceleration) * Time.deltaTime; }
         private Vector3 rightTurning { get => (((transform.up * vehicleController.turning) * TURN_RATE) * Mathf.Lerp(0f, TURN_RATE, rigidBody.velocity.magnitude / MAXIMUM_VELOCITY))* Time.deltaTime; }
 
@@ -78,6 +87,8 @@ namespace DerbyRoyale.Vehicles
         void Start()
         {
             RestartCar();
+
+			onSpawn(this);
         }
 
         void FixedUpdate()
@@ -175,12 +186,17 @@ namespace DerbyRoyale.Vehicles
 
         public void TrashCar()
         {
-            currentHealth = 0f;
-            isBoosting = false;
-            isArmored = false;
+			if (!isTrashed)
+			{
+				currentHealth = 0f;
+				isBoosting = false;
+				isArmored = false;
 
-            rigidBody.AddExplosionForce(TRASHED_EXPLOSION_FORCE, transform.position, TRASHED_EXPLOSION_RADIUS, 1.5f, ForceMode.Impulse);
-            RunDestructionTimer();
+				rigidBody.AddExplosionForce(TRASHED_EXPLOSION_FORCE, transform.position, TRASHED_EXPLOSION_RADIUS, 1.5f, ForceMode.Impulse);
+				RunDestructionTimer();
+
+				onDeath(this);
+			}
         }
         #endregion
 
@@ -290,7 +306,7 @@ namespace DerbyRoyale.Vehicles
                 return;
             }
 
-            Vector3 randomOffset = -transform.up + new Vector3(Random.Range(-0.1f,0.1f), Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
+            Vector3 randomOffset = -transform.up + new Vector3(URandom.Range(-0.1f,0.1f), URandom.Range(-0.1f, 0.1f), URandom.Range(-0.1f, 0.1f));
             rigidBody.AddForce(randomOffset * FLIP_IMPULSE_STRENGTH, ForceMode.Impulse);
         }
 
@@ -310,11 +326,13 @@ namespace DerbyRoyale.Vehicles
 
         IEnumerator RunDestructionTimer()
         {
+			Debug.Log("Running destruction timer");
             yield return new WaitForSeconds(TRASHED_DESTRUCTION_DELAY);
             Destroy(gameObject);
-        }
+			Debug.Log("Vehicle destroyed");
+		}
 
-        IEnumerator RunSlippingTimer(float slippingDuration)
+		IEnumerator RunSlippingTimer(float slippingDuration)
         {
             isSlipping = true;
             rigidBody.drag = SLIPPERY_DRAG;

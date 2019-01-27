@@ -44,17 +44,24 @@ namespace DerbyRoyale.Gameplay
 		#region UNITY EVENTS
 		void Start()
 		{
-			//TODO DerbyCar += HandleLevelCompleted;
+			DerbyCar.onSpawn += HandlePlayerSpawn;
+			DerbyCar.onDeath += HandlePlayerDeath;
 		}
 
 		void OnDestroy()
 		{
-			//TODO DerbyCar -= HandleLevelCompleted; 
+			DerbyCar.onSpawn -= HandlePlayerSpawn;
+			DerbyCar.onDeath -= HandlePlayerDeath;
 		}
 		#endregion
 
 
 		#region EVENT HANDLERS
+		void HandlePlayerSpawn(DerbyCar player)
+		{
+			numberOfPlayers++;
+		}
+
 		void HandlePlayerDeath(DerbyCar player)
 		{
 			numberOfPlayers--;
@@ -71,20 +78,32 @@ namespace DerbyRoyale.Gameplay
 		#region PUBLIC API
 		public void StartGame()
 		{
+			ResetManager();
 			StartCoroutine(StartGameSequence());
 		}
 
 		public void EndGame()
 		{
-			Destroy(playerInstance.gameObject);
+			if (playerInstance != null)
+			{
+				Destroy(playerInstance.gameObject);
+			}
+
 			playerInstance = null;
 
 			SceneManager.instance.UnloadScene(SceneType.GameScene);
+
+			onGameEnd();
 		}
 		#endregion
 
 
 		#region HELPER FUNCTIONS
+		void ResetManager()
+		{
+			numberOfPlayers = 0;
+		}
+
 		IEnumerator StartGameSequence()
 		{
 			SceneManager.instance.LoadScene(SceneType.GameScene);

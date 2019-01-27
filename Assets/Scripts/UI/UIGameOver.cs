@@ -51,6 +51,8 @@ namespace DerbyRoyale.UI
 			Time.timeScale = 1f;
 
 			m_Parent.SetActive(true);
+			m_DeathElement.SetActive(false);
+			m_SurvivorElement.SetActive(false);
 
 			switch (condition)
 			{
