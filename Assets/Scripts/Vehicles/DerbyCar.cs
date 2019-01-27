@@ -47,25 +47,25 @@ namespace DerbyRoyale.Vehicles
 
 
 		#region PROPERTIES
-		private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); }
-        private Vector3 forwardAcceleration { get => ((transform.forward * DEFAULT_ACCELERATION) * vehicleController.acceleration) * Time.deltaTime; }
-        private Vector3 rightTurning { get => (((transform.up * vehicleController.turning) * TURN_RATE) * Mathf.Lerp(0f, TURN_RATE, rigidBody.velocity.magnitude / MAXIMUM_VELOCITY))* Time.deltaTime; }
+		private Rigidbody rigidBody { get => m_RigidBody ?? (m_RigidBody = GetComponent<Rigidbody>()); set { rigidBody = value; } }
+        private Vector3 forwardAcceleration { get => ((transform.forward * DEFAULT_ACCELERATION) * vehicleController.acceleration) * Time.deltaTime; set { forwardAcceleration = value; } }
+        private Vector3 rightTurning { get => (((transform.up * vehicleController.turning) * TURN_RATE) * Mathf.Lerp(0f, TURN_RATE, rigidBody.velocity.magnitude / MAXIMUM_VELOCITY))* Time.deltaTime; set { rightTurning = value; } }
 
-        private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); }
-        private FloorDetectionComponent[] floorDetectionComponents { get => m_FloorDetectionComponents; }
-        private bool reverseInputInverted { get => m_InvertReverseInput; }
+        private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); set { vehicleController = value; } }
+        private FloorDetectionComponent[] floorDetectionComponents { get => m_FloorDetectionComponents; set { floorDetectionComponents = value; } }
+        private bool reverseInputInverted { get => m_InvertReverseInput; set { reverseInputInverted = value; } }
 
-        public float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); set { m_CurrentHealth = Mathf.Clamp01(value); } }
-        public bool hasMaxHealth { get => currentHealth == 1f; }
-        public bool isTrashed { get => currentHealth == 0f; }
+        public float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); private set { m_CurrentHealth = Mathf.Clamp01(value); } }
+        public bool hasMaxHealth { get => currentHealth == 1f; private set { hasMaxHealth = value; } }
+        public bool isTrashed { get => currentHealth == 0f; private set { isTrashed = value; } }
         public bool isBoosting { get; private set; }
         public bool isArmored { get; private set; }
-        public bool isGrounded { get => RefreshFloorDetection(); }
+        public bool isGrounded { get => RefreshFloorDetection(); set { isGrounded = value; } }
         public bool isSlipping { get; private set; }
-        private bool isReversing { get => vehicleController.acceleration < 0f; }
+        private bool isReversing { get => vehicleController.acceleration < 0f; set { isReversing = value; } }
         private bool canFlip { get; set; }
-        private bool isFlipping { get => Input.GetKeyDown(KeyCode.Space); }
-        private bool hasPickup { get => currentPickup != null; }
+        private bool isFlipping { get => Input.GetKeyDown(KeyCode.Space); set { isFlipping = value; } }
+        private bool hasPickup { get => currentPickup != null; set { hasPickup = value; } }
 
         private PickupBehaviour currentPickup { get; set; }
         #endregion
