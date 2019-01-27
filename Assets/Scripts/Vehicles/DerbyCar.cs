@@ -9,7 +9,7 @@ using URandom = UnityEngine.Random;
 
 namespace DerbyRoyale.Vehicles
 {
-    [RequireComponent(typeof(Rigidbody), typeof(MeshRenderer), typeof(MeshFilter))]
+    [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(VehicleController))]
     [AddComponentMenu("Derby Royale/Vehicles/Derby Car")]
     public sealed class DerbyCar : MonoBehaviour
