@@ -18,7 +18,8 @@ namespace DerbyRoyale.Vehicles
         private const float TURN_RATE = 25f;
         private const float MAXIMUM_VELOCITY = 100f;
 
-        private const float MAXIMUM_CRASH_VELOCITY = 1000f;
+        private const float MINIMUM_CRASH_VELOCITY = 11f;
+        private const float MAXIMUM_CRASH_VELOCITY = 24f;
         private const float MAXIMUM_CRASH_DAMAGE = 0.5f;
 
         private const float DEFAULT_HEALTH = 1f;
@@ -256,6 +257,11 @@ namespace DerbyRoyale.Vehicles
 
         void CrashCar(Collision collision)
         {
+            if (collision.relativeVelocity.magnitude < MINIMUM_CRASH_VELOCITY)
+            {
+                return;
+            }
+
             float crashDamage = Mathf.Clamp01(collision.relativeVelocity.magnitude / MAXIMUM_CRASH_VELOCITY);
             DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE, crashDamage));
         }
