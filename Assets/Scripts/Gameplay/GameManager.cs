@@ -2,8 +2,10 @@
 
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using DerbyRoyale.Levels;
+using DerbyRoyale.Players;
 using DerbyRoyale.Scenes;
 using DerbyRoyale.Vehicles;
 
@@ -26,13 +28,15 @@ namespace DerbyRoyale.Gameplay
 
 		#region PROPERTIES
 		public LevelController levelController { get => LevelManager.instance?.currentController; }
-		#endregion
 
+		public int playerCount { get => currentPlayers.Count; }
+		public Dictionary<int, Player> currentPlayers { get; private set; } = new Dictionary<int, Player>();
 
-		#region VARIABLES
-		public int numberOfPlayers { get; private set; }
-
+		// TODO What to do here?
 		public DerbyCar playerInstance { get; private set; }
+
+		/// Indicates whether a game is active or not.
+		public bool isRunning { get; private set; }
 		#endregion
 
 
@@ -42,14 +46,20 @@ namespace DerbyRoyale.Gameplay
 
 
 		#region UNITY EVENTS
-		void Start()
+		protected override void Awake()
 		{
+			base.Awake();
+
+			LocalPlayerConnect.onPlayerConnect += HandlePlayerConnect;
 			DerbyCar.onSpawn += HandlePlayerSpawn;
 			DerbyCar.onDeath += HandlePlayerDeath;
 		}
 
-		void OnDestroy()
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
+			LocalPlayerConnect.onPlayerDisconnect -= HandlePlayerDisconnect;
 			DerbyCar.onSpawn -= HandlePlayerSpawn;
 			DerbyCar.onDeath -= HandlePlayerDeath;
 		}
@@ -57,23 +67,42 @@ namespace DerbyRoyale.Gameplay
 
 
 		#region EVENT HANDLERS
+		void HandlePlayerConnect(int playerIndex)
+		{
+			if (!currentPlayers.ContainsKey(playerIndex))
+			{
+				Debug.LogError("Connecting to game: " + playerIndex);
+				currentPlayers.Add(playerIndex, new Player(playerIndex));
+			}
+		}
+
+		void HandlePlayerDisconnect(int playerIndex)
+		{
+			if (currentPlayers.ContainsKey(playerIndex))
+			{
+				Debug.LogError("Disconnecting from game: " + playerIndex);
+				currentPlayers.Remove(playerIndex);
+				// TODO Despawn
+			}
+		}
+
 		void HandlePlayerSpawn(DerbyCar player)
 		{
-			numberOfPlayers++;
+			//numberOfPlayers++;
 		}
 
 		void HandlePlayerDeath(DerbyCar player)
 		{
-			numberOfPlayers--;
+			//numberOfPlayers--;
 
 			// REFACTOR
 			// If the player has died, check whether we were the last survivor on the map.
 			if (player == playerInstance)
 			{
-				onGameOver(numberOfPlayers == 0 ? GameOverCondition.LastSurvivor : GameOverCondition.Died);
+				//onGameOver(numberOfPlayers == 0 ? GameOverCondition.LastSurvivor : GameOverCondition.Died);
 			}
 			// If another player has died, check if we were the last survivor
-			else if (numberOfPlayers == 1)
+			//else if (numberOfPlayers == 1)
 			{
 				onGameOver(GameOverCondition.LastSurvivor);
 			}
@@ -84,21 +113,22 @@ namespace DerbyRoyale.Gameplay
 		#region PUBLIC API
 		public void StartGame()
 		{
-			ResetManager();
+			if (playerCount < 2)
+			{
+				Debug.LogError("Cannot start game with less than 2 players.");
+				//return;
+			}
+
 			StartCoroutine(StartGameSequence());
 		}
 
 		public void EndGame()
 		{
-			if (playerInstance != null)
-			{
-				Destroy(playerInstance.gameObject);
-			}
-
-			playerInstance = null;
+			ResetManager();
 
 			SceneManager.instance.UnloadScene(SceneType.GameScene);
 
+			isRunning = false;
 			onGameEnd();
 		}
 		#endregion
@@ -107,7 +137,22 @@ namespace DerbyRoyale.Gameplay
 		#region HELPER FUNCTIONS
 		void ResetManager()
 		{
-			numberOfPlayers = 0;
+			if (playerInstance != null)
+			{
+				Destroy(playerInstance.gameObject);
+			}
+
+			playerInstance = null;
+
+			currentPlayers.Clear();
+		}
+
+		void SpawnPlayer()
+		{
+			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
+			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
+
+			playerInstance = Instantiate(m_PlayerCarPrefab, spawnPoint.position, spawnPoint.rotation, transform);
 		}
 
 		IEnumerator StartGameSequence()
@@ -117,13 +162,9 @@ namespace DerbyRoyale.Gameplay
 			// Wait until the scene is fully loaded and the level controller been set up.
 			yield return new WaitUntil(() => LevelManager.instance.currentController != null);
 
-			// Spawn player instance
+			// TODO Spawn player instances
 
-			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
-			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
-
-			playerInstance = Instantiate(m_PlayerCarPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-
+			isRunning = true;
 			onGameStart();
 		}
 		#endregion

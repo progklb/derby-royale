@@ -17,7 +17,10 @@ namespace DerbyRoyale.Input
 		#endregion
 
 
-		#region EDITOR FIELDS
+		#region PROPERTIES
+		/// Number of connected devices.
+		public int connectedJoysticks { get; private set; }
+
 		/// Unity's joystick list.
 		private string[] joystickNames { get => UInput.GetJoystickNames(); }
 
@@ -46,14 +49,21 @@ namespace DerbyRoyale.Input
 
 			while (true)
 			{
+				connectedJoysticks = 0;
+
 				if (joystickNames.Length > 0)
 				{
 					for (int i = 0; i < joystickNames.Length; ++i)
 					{
-						if (!string.IsNullOrEmpty(joystickNames[i]) && string.IsNullOrEmpty(joystickNamesCache[i]))
+						if (!string.IsNullOrEmpty(joystickNames[i]))
 						{
-							Debug.Log("Controller " + i + " is connected using: " + joystickNames[i]);
-							onJoystickConnectionChanged(i, joystickNames[i], true);
+							connectedJoysticks++;
+
+							if (string.IsNullOrEmpty(joystickNamesCache[i]))
+							{
+								Debug.Log("Controller " + i + " is connected using: " + joystickNames[i]);
+								onJoystickConnectionChanged(i, joystickNames[i], true);
+							}
 						}
 						else if (string.IsNullOrEmpty(joystickNames[i]) && !string.IsNullOrEmpty(joystickNamesCache[i]))
 						{

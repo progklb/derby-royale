@@ -10,7 +10,7 @@ namespace DerbyRoyale
 
 
 		#region UNITY EVENTS
-		void Awake()
+		protected virtual void Awake()
 		{
 			if (instance == null)
 			{
@@ -22,7 +22,7 @@ namespace DerbyRoyale
 			}
 		}
 
-		void OnDestroy()
+		protected virtual void OnDestroy()
 		{
 			if (instance == this)
 			{

@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using System;
+
 using UInput = UnityEngine.Input;
 
 namespace DerbyRoyale.Input
@@ -11,20 +13,38 @@ namespace DerbyRoyale.Input
 		// Controller (Start)
 		// WASD, IJKL, arrows, numpad
 
+		#region EVENTS
+		public static event Action<int, bool> onDeviceConnectionChanged = delegate { };
+		#endregion
+
+		#region PROPERTIES
+		private JoystickMonitor joystickMonitor { get; set; }
+
+		// TODO Enforce min of 1
+		public int maxLocalPlayers { get => m_MaxLocalPlayers; }
+		// TODO Cater for keyboards
+		public int connectedDeviceCount { get => joystickMonitor.connectedJoysticks; }
+		#endregion
+
+
 		#region EDITOR FIELDS
-		private JoystickMonitor joystickMonitor;
+		[SerializeField] private int m_MaxLocalPlayers;
 		#endregion
 
 
 		#region UNITY EVENTS
-		void Awake()
+		protected override void Awake()
 		{
+			base.Awake();
+
 			joystickMonitor = GetComponent<JoystickMonitor>();
 			joystickMonitor.onJoystickConnectionChanged += HandleJoystickConnectionChanged;
 		}
 
-		void OnDestroy()
+		protected override void OnDestroy()
 		{
+			base.OnDestroy();
+
 			joystickMonitor.onJoystickConnectionChanged -= HandleJoystickConnectionChanged;
 		}
 		#endregion
@@ -33,6 +53,7 @@ namespace DerbyRoyale.Input
 		#region EVENT HANDLERS
 		void HandleJoystickConnectionChanged(int idx, string displayName, bool connected)
 		{
+			onDeviceConnectionChanged(idx, connected);
 		}
 		#endregion
 	}
