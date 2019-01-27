@@ -6,7 +6,9 @@ namespace DerbyRoyale.Vehicles
     public sealed class CarHealthVisuals : MonoBehaviour
     {
         #region CONSTANTS
-        private const int MAXIMUM_SMOKE_EMISSION_RATE = 50;
+        private const float MINIMUM_SMOKE_THRESHOLD = 0.75f;
+
+        private const int MAXIMUM_SMOKE_EMISSION_RATE = 10;
         private const float MINIMUM_SMOKE_SCALE = 0.1f;
         private const float MAXIMUM_SMOKE_SCALE = 1f;
         #endregion
@@ -44,10 +46,15 @@ namespace DerbyRoyale.Vehicles
         #region HELPER FUNCTIONS
         void EmitSmokeParticles()
         {
-            var smokeParams = new ParticleSystem.EmitParams();
-            smokeParams.startSize = 0.2f;
+            if (owningDerbyCar.currentHealth > MINIMUM_SMOKE_THRESHOLD)
+            {
+                return;
+            }
 
-            int emissionRate = Mathf.FloorToInt(Mathf.Lerp(0, MAXIMUM_SMOKE_EMISSION_RATE, owningDerbyCar.currentHealth));
+            var smokeParams = new ParticleSystem.EmitParams();
+            smokeParams.startSize = Mathf.Lerp(MAXIMUM_SMOKE_SCALE, MINIMUM_SMOKE_SCALE, owningDerbyCar.currentHealth);
+
+            int emissionRate = Mathf.FloorToInt(Mathf.Lerp(MAXIMUM_SMOKE_EMISSION_RATE, 0, owningDerbyCar.currentHealth));
             engineSmokeParticles.Emit(smokeParams, emissionRate);
         }
         #endregion
