@@ -151,7 +151,7 @@ namespace DerbyRoyale.Vehicles
 
             if (!isBoosting)
             {
-                RunBoostTimer(boostDuration);
+				StartCoroutine(RunBoostTimer(boostDuration));
             }
         }
 
@@ -164,23 +164,15 @@ namespace DerbyRoyale.Vehicles
 
             if (!isArmored)
             {
-                RunArmorTimer(armorDuration);
+				StartCoroutine(RunArmorTimer(armorDuration));
             }
         }
 
-        public void SlipCar()
+        public void SlipCar(float slippingDuration = TEMPORARY_SLIP_DURATION)
         {
             if (!isSlipping)
             {
-                RunSlippingTimer(TEMPORARY_SLIP_DURATION);
-            }
-        }
-
-        public void SlipCar(float slippingDuration)
-        {
-            if (!isSlipping)
-            {
-                RunSlippingTimer(slippingDuration);
+				StartCoroutine(RunSlippingTimer(slippingDuration));
             }
         }
 
@@ -193,7 +185,7 @@ namespace DerbyRoyale.Vehicles
 				isArmored = false;
 
 				rigidBody.AddExplosionForce(TRASHED_EXPLOSION_FORCE, transform.position, TRASHED_EXPLOSION_RADIUS, 1.5f, ForceMode.Impulse);
-				RunDestructionTimer();
+				StartCoroutine(RunDestructionTimer());
 
 				onDeath(this);
 			}

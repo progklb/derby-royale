@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using DerbyRoyale.Vehicles;
+
 namespace DerbyRoyale.Gameplay
 {
 	/// <summary>
@@ -9,6 +11,8 @@ namespace DerbyRoyale.Gameplay
 	{
 		#region PROPERTIES
 		private Transform target { get => m_Target; }
+
+		private DerbyCar player { get => GameManager.instance?.playerInstance; }
 		#endregion
 
 
@@ -34,9 +38,9 @@ namespace DerbyRoyale.Gameplay
 
 				transform.LookAt(target);
 			}
-			else
+			else if (player != null)
 			{
-				m_Target = GameManager.instance?.playerInstance?.transform;
+				m_Target = player.transform;
 			}
 		}
 		#endregion
