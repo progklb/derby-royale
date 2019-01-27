@@ -10,13 +10,16 @@ namespace DerbyRoyale.Vehicles
     public sealed class DerbyCar : MonoBehaviour
     {
         #region CONSTANTS
-        private const float DEFAULT_ACCELERATION = 1500f;
-        private const float DEFAULT_DRAG = 0.8f;
-        private const float SLIPPERY_DRAG = 0.25f;
-        private const float TURN_RATE = 20f;
+        private const float DEFAULT_ACCELERATION = 1750f;
+        private const float DEFAULT_DRAG = 1.75f;
+        private const float DEFAULT_ANGULAR_DRAG = 0.2f;
+        private const float SLIPPERY_DRAG = 0.8f;
+        private const float SLIPPERY_ANGULAR_DRAG = 0.05f;
+        private const float TURN_RATE = 25f;
         private const float MAXIMUM_VELOCITY = 100f;
 
-        private const float MAXIMUM_CRASH_VELOCITY = 1000f;
+        private const float MINIMUM_CRASH_VELOCITY = 11f;
+        private const float MAXIMUM_CRASH_VELOCITY = 24f;
         private const float MAXIMUM_CRASH_DAMAGE = 0.5f;
 
         private const float DEFAULT_HEALTH = 1f;
@@ -37,6 +40,7 @@ namespace DerbyRoyale.Vehicles
 
         private VehicleController vehicleController { get => m_VehicleController ?? (m_VehicleController = GetComponent<VehicleController>()); }
         private FloorDetectionComponent[] floorDetectionComponents { get => m_FloorDetectionComponents; }
+        private bool reverseInputInverted { get => m_InvertReverseInput; }
 
         public float currentHealth { get => Mathf.Clamp01(m_CurrentHealth); set { m_CurrentHealth = Mathf.Clamp01(value); } }
         public bool hasMaxHealth { get => currentHealth == 1f; }
@@ -45,11 +49,15 @@ namespace DerbyRoyale.Vehicles
         public bool isArmored { get; private set; }
         public bool isGrounded { get => RefreshFloorDetection(); }
         public bool isSlipping { get; private set; }
+        private bool isReversing { get => vehicleController.acceleration < 0f; }
         #endregion
 
 
         #region EDITOR FIELDS
         [Space(3), Header("DERBY CAR SETUP"), Space(5)]
+        [SerializeField]
+        private bool m_InvertReverseInput;
+        [Space(5)]
         [SerializeField]
         private FloorDetectionComponent[] m_FloorDetectionComponents;
         #endregion
@@ -85,6 +93,7 @@ namespace DerbyRoyale.Vehicles
         {
             currentHealth = DEFAULT_HEALTH;
             rigidBody.drag = DEFAULT_DRAG;
+            rigidBody.angularDrag = DEFAULT_ANGULAR_DRAG;
             isBoosting = false;
             isArmored = false;
             isSlipping = false;
@@ -181,7 +190,14 @@ namespace DerbyRoyale.Vehicles
 
             if (vehicleController.isAccelerating)
             {
-                AccelerateCar();
+                if (isReversing)
+                {
+                    ReverseCar();
+                }
+                else
+                {
+                    AccelerateCar();
+                }
             }
 
             if (vehicleController.isTurning)
@@ -202,9 +218,27 @@ namespace DerbyRoyale.Vehicles
             }
         }
 
+        void ReverseCar()
+        {
+            if (isBoosting)
+            {
+                rigidBody.AddForce(Vector3.Reflect(forwardAcceleration, transform.up) * 0.75f, ForceMode.Acceleration);
+            }
+            else
+            {
+                rigidBody.AddForce(Vector3.Reflect(forwardAcceleration, transform.up) * 0.5f, ForceMode.Force);
+            }
+        }
+
         void TurnCar()
         {
             Quaternion deltaRotation = Quaternion.Euler(rightTurning);
+
+            if (reverseInputInverted && isReversing)
+            {
+                deltaRotation = Quaternion.Euler(-rightTurning);
+            }
+
             rigidBody.MoveRotation(rigidBody.rotation * deltaRotation);
         }
 
@@ -223,6 +257,11 @@ namespace DerbyRoyale.Vehicles
 
         void CrashCar(Collision collision)
         {
+            if (collision.relativeVelocity.magnitude < MINIMUM_CRASH_VELOCITY)
+            {
+                return;
+            }
+
             float crashDamage = Mathf.Clamp01(collision.relativeVelocity.magnitude / MAXIMUM_CRASH_VELOCITY);
             DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE, crashDamage));
         }
@@ -251,8 +290,10 @@ namespace DerbyRoyale.Vehicles
         {
             isSlipping = true;
             rigidBody.drag = SLIPPERY_DRAG;
+            rigidBody.angularDrag = SLIPPERY_ANGULAR_DRAG;
             yield return new WaitForSeconds(slippingDuration);
             rigidBody.drag = DEFAULT_DRAG;
+            rigidBody.angularDrag = DEFAULT_ANGULAR_DRAG;
             isSlipping = false;
         }
         #endregion
