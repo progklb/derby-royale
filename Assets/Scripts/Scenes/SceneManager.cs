@@ -1,24 +1,14 @@
 ﻿using UnityEngine;
 
 using System.Collections;
-using System.Collections.Generic;
 
 using UnitySceneManagement = UnityEngine.SceneManagement;
 using UnitySceneManager = UnityEngine.SceneManagement.SceneManager;
 
-namespace DerbyRoyale
+namespace DerbyRoyale.Scenes
 {
-	public class SceneManager : MonoBehaviour
+	public class SceneManager : Manager<SceneManager>
 	{
-		#region TYPES
-		private enum SceneType
-		{
-			MainMenu = 0,
-			GameScene = 1
-		}
-		#endregion
-
-
 	    #region EDITOR FIELDS
 		[SerializeField] private string m_MainMenuScene; 
 		[SerializeField] private string m_GameScene; 
@@ -26,14 +16,14 @@ namespace DerbyRoyale
 
 
 		#region PUBLIC API
-		public void LoadScene(int sceneType)
+		public void LoadScene(SceneType sceneType)
 		{
-			StartCoroutine(LoadSceneSequence((SceneType)sceneType));
+			StartCoroutine(LoadSceneSequence(sceneType));
 		}
 
-		public void UnloadScene(int sceneType)
+		public void UnloadScene(SceneType sceneType)
 		{
-			StartCoroutine(UnloadSceneSequence((SceneType)sceneType));
+			StartCoroutine(UnloadSceneSequence(sceneType));
 		}
 		#endregion
 
