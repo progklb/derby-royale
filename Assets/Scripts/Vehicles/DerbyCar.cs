@@ -17,7 +17,7 @@ namespace DerbyRoyale.Vehicles
         private const float SLIPPERY_ANGULAR_DRAG = 0.05f;
         private const float TURN_RATE = 25f;
         private const float MAXIMUM_VELOCITY = 100f;
-        private const float FLIP_IMPULSE_STRENGTH = 100f;
+        private const float FLIP_IMPULSE_STRENGTH = 10f;
         private const float FLIP_RESET_DURATION = 2f;
 
         private const float MINIMUM_CRASH_VELOCITY = 11f;
@@ -30,8 +30,8 @@ namespace DerbyRoyale.Vehicles
         private const float TEMPORARY_SLIP_DURATION = 3f;
 
         private const float TRASHED_DESTRUCTION_DELAY = 3f;
-        private const float TRASHED_EXPLOSION_FORCE = 1000f;
-        private const float TRASHED_EXPLOSION_RADIUS = 200f;
+        private const float TRASHED_EXPLOSION_FORCE = 10f;
+        private const float TRASHED_EXPLOSION_RADIUS = 5f;
         #endregion
 
 
