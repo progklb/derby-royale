@@ -3,6 +3,8 @@
 using System;
 using System.Collections;
 
+using DerbyRoyale.Pickups;
+
 using URandom = UnityEngine.Random;
 
 namespace DerbyRoyale.Vehicles
@@ -63,6 +65,9 @@ namespace DerbyRoyale.Vehicles
         private bool isReversing { get => vehicleController.acceleration < 0f; }
         private bool canFlip { get; set; }
         private bool isFlipping { get => Input.GetKeyDown(KeyCode.Space); }
+        private bool hasPickup { get => currentPickup != null; }
+
+        private PickupBehaviour currentPickup { get; set; }
         #endregion
 
 
@@ -165,6 +170,30 @@ namespace DerbyRoyale.Vehicles
             if (!isArmored)
             {
 				StartCoroutine(RunArmorTimer(armorDuration));
+            }
+        }
+
+        public bool AddCarPickup(PickupBehaviour newPickup, bool overrideCurrentPickup = false)
+        {
+            if (isTrashed)
+            {
+                return false;
+            }
+
+            if (!hasPickup || overrideCurrentPickup)
+            {
+                currentPickup = newPickup;
+                return true;
+            }
+            return false;
+        }
+
+        public void UseCarPickup()
+        {
+            if (hasPickup && !isTrashed)
+            {
+                currentPickup.UsePickup(this);
+                currentPickup = null;
             }
         }
 
