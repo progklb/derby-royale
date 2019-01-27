@@ -56,12 +56,12 @@ namespace DerbyRoyale.UI
 
 			switch (condition)
 			{
-				case GameOverCondition.Survived:
-					m_DeathElement.SetActive(true);
+				case GameOverCondition.LastSurvivor:
+					m_SurvivorElement.SetActive(true);
 					break;
 
 				case GameOverCondition.Died:
-					m_SurvivorElement.SetActive(true);
+					m_DeathElement.SetActive(true);
 					break;
 			}
 		}

@@ -6,6 +6,6 @@
 	public enum GameOverCondition
 	{
 		Died,
-		Survived
+		LastSurvivor
 	}
 }

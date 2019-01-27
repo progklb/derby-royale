@@ -66,10 +66,16 @@ namespace DerbyRoyale.Gameplay
 		{
 			numberOfPlayers--;
 
-			// If player has died
+			// REFACTOR
+			// If the player has died, check whether we were the last survivor on the map.
 			if (player == playerInstance)
 			{
-				onGameOver(numberOfPlayers == 0 ? GameOverCondition.Survived : GameOverCondition.Died);
+				onGameOver(numberOfPlayers == 0 ? GameOverCondition.LastSurvivor : GameOverCondition.Died);
+			}
+			// If another player has died, check if we were the last survivor
+			else if (numberOfPlayers == 1)
+			{
+				onGameOver(GameOverCondition.LastSurvivor);
 			}
 		}
 		#endregion
