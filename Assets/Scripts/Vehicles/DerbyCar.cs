@@ -214,7 +214,7 @@ namespace DerbyRoyale.Vehicles
                 FlipCar();
             }
 
-            if (vehicleController.isAccelerating)
+            if (vehicleController.isAccelerating && isGrounded)
             {
                 if (isReversing)
                 {
@@ -226,7 +226,7 @@ namespace DerbyRoyale.Vehicles
                 }
             }
 
-            if (vehicleController.isTurning)
+            if (vehicleController.isTurning && isGrounded)
             {
                 TurnCar();
             }

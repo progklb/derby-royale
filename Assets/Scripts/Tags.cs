@@ -4,6 +4,7 @@
 	{
 		#region CONSTANTS
 		public const string PLAYER_TAG = "Player";
-		#endregion
-	}
+        public const string FLOOR_TAG = "Floor";
+        #endregion
+    }
 }

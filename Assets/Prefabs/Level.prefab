@@ -616,7 +616,7 @@ GameObject:
   m_Component:
   - component: {fileID: 305640763693598253}
   - component: {fileID: 305640763693598252}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Level
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1120,6 +1120,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stage3
       objectReference: {fileID: 0}
+    - target: {fileID: 9070641032621830594, guid: b5b7922508c97ee4db7f3659c84ccd66,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 867322040679969448, guid: b5b7922508c97ee4db7f3659c84ccd66,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1194,6 +1199,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stage4
+      objectReference: {fileID: 0}
+    - target: {fileID: 322423508064505224, guid: 77e3450c11258c546bcaa3b0064e8c82,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2989967647775289501, guid: 77e3450c11258c546bcaa3b0064e8c82,
         type: 3}

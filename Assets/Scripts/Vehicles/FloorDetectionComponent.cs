@@ -10,7 +10,33 @@ namespace DerbyRoyale.Vehicles
 
 
         #region PROPERTIES
-        public bool isGrounded { get => Physics.Raycast(transform.position, -transform.up, DETECTION_DISTANCE); }
+        private bool drawDetectionDebugLine { get => m_DrawDetectionDebugLine; }
+        public bool isGrounded { get => Physics.Raycast(transform.position, -transform.up, DETECTION_DISTANCE, LayerMask.GetMask(Layers.FLOOR_LAYER)); }
+        #endregion
+
+
+        #region EDITOR FIELDS
+        [SerializeField]
+        private bool m_DrawDetectionDebugLine;
+        #endregion
+
+
+        #region UNITY EVENTS
+        void FixedUpdate()
+        {
+            if (drawDetectionDebugLine)
+            {
+                DrawDebugLine();
+            }
+        }
+        #endregion
+
+
+        #region HELPER FUNCTIONS
+        void DrawDebugLine()
+        {
+            Debug.DrawLine(transform.position, transform.position + (-transform.up * DETECTION_DISTANCE), Color.green);
+        }
         #endregion
     }
 }
