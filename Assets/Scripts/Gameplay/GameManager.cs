@@ -100,11 +100,6 @@ namespace DerbyRoyale.Gameplay
 			playerInstance = Instantiate(m_PlayerCarPrefab, spawnPoint.position, spawnPoint.rotation, transform);
 
 			onGameStart();
-
-			// HACK. Attach camera to player.
-			var cam = FindObjectOfType<Cinemachine.CinemachineVirtualCamera>();
-			cam.Follow = playerInstance.transform;
-			cam.LookAt = playerInstance.transform;
 		}
 		#endregion
 	}
