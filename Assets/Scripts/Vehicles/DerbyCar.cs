@@ -209,7 +209,7 @@ namespace DerbyRoyale.Vehicles
                 return;
             }
 
-            if (isFlipping)
+            if (isFlipping && canFlip)
             {
                 FlipCar();
             }
@@ -296,7 +296,14 @@ namespace DerbyRoyale.Vehicles
             }
 
             float crashDamage = Mathf.Clamp01(collision.relativeVelocity.magnitude / MAXIMUM_CRASH_VELOCITY);
-            DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE, crashDamage));
+            float damageMultiplier = 1f;
+
+            if(isBoosting)
+            {
+                damageMultiplier = BOOST_MULTIPLIER;
+            }
+
+            DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE / damageMultiplier, crashDamage));
         }
 
         void FlipCar()
