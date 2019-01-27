@@ -1,4 +1,4 @@
-﻿Shader "Derby Royale/Unlit/Double Sided Unlit Opaque"
+﻿Shader "Derby Royale/Unlit/Double Sided Unlit Transparent"
 {
     Properties
     {
@@ -6,9 +6,11 @@
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "Queue" = "Transparent" "IgnoreProjector" = "True" "RenderType" = "Transparent" }
         LOD 100
 		Cull Off
+		ZWrite Off
+		Blend SrcAlpha OneMinusSrcAlpha
 
         Pass
         {

@@ -18,7 +18,7 @@ namespace DerbyRoyale.Vehicles
         private const float TURN_RATE = 25f;
         private const float MAXIMUM_VELOCITY = 100f;
         private const float FLIP_IMPULSE_STRENGTH = 100f;
-        private const float FLIP_RESET_DURATION = 3f;
+        private const float FLIP_RESET_DURATION = 2f;
 
         private const float MINIMUM_CRASH_VELOCITY = 11f;
         private const float MAXIMUM_CRASH_VELOCITY = 24f;
@@ -53,7 +53,7 @@ namespace DerbyRoyale.Vehicles
         public bool isSlipping { get; private set; }
         private bool isReversing { get => vehicleController.acceleration < 0f; }
         private bool canFlip { get; set; }
-        private bool isFlipping { get => Input.GetAxis("FlipCar") != 0; }
+        private bool isFlipping { get => Input.GetKeyDown(KeyCode.Space); }
         #endregion
 
 
@@ -254,11 +254,18 @@ namespace DerbyRoyale.Vehicles
 
         bool RefreshFloorDetection()
         {
+            int count = 0;
+
             foreach(FloorDetectionComponent detection in floorDetectionComponents)
             {
                 if (detection.isGrounded)
                 {
-                    return true;
+                    ++count;
+
+                    if (count >= floorDetectionComponents.Length / 2)
+                    {
+                        return true;
+                    }
                 }
             }
 
