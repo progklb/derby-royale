@@ -20,7 +20,7 @@ namespace DerbyRoyale.Gameplay
 		[SerializeField] private Transform m_Target;
 
 		[SerializeField] private Vector3 m_PositionOffset;
-		[SerializeField] private float m_PositionSmoothing = 0.3f;
+		[SerializeField] private float m_PositionSmoothing = 0.15f;
 
 		private Vector3 m_Velocity;
 		#endregion

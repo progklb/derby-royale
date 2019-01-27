@@ -55,8 +55,8 @@ namespace DerbyRoyale.Levels
 
 			Debug.Log($"Stage {stage.stageNumber} completed. Begining detroy timeout.");
 
-			yield return new WaitForSeconds(m_Parameters.stageDestroyTimeout);
 			animator.SetTrigger(STAGE_DESTROY_TRIGGER);
+			yield return new WaitForSeconds(m_Parameters.stageDestroyTimeout);
 			RaiseStageProgressChanged(StageProgress.Destroyed);
 
 			Debug.Log($"Stage {stage.stageNumber} destroyed.");
