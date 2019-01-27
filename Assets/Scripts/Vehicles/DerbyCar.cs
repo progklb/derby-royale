@@ -5,6 +5,7 @@ using System.Collections;
 
 using DerbyRoyale.Pickups;
 
+using UInput = UnityEngine.Input;
 using URandom = UnityEngine.Random;
 
 namespace DerbyRoyale.Vehicles
@@ -64,7 +65,7 @@ namespace DerbyRoyale.Vehicles
         public bool isSlipping { get; private set; }
         private bool isReversing { get => vehicleController.acceleration < 0f; set { isReversing = value; } }
         private bool canFlip { get; set; }
-        private bool isFlipping { get => Input.GetKeyDown(KeyCode.Space); set { isFlipping = value; } }
+        private bool isFlipping { get => UInput.GetKeyDown(KeyCode.Space); set { isFlipping = value; } }
         private bool hasPickup { get => currentPickup != null; set { hasPickup = value; } }
 
         private PickupBehaviour currentPickup { get; set; }

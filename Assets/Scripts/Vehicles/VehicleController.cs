@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using UInput = UnityEngine.Input;
+
 namespace DerbyRoyale.Vehicles
 {
     [AddComponentMenu("Derby Royale/Vehicles/Vehicle Controller")]
@@ -12,8 +14,9 @@ namespace DerbyRoyale.Vehicles
 
 
         #region VARIABLES
-        public float acceleration { get => Input.GetAxis(ACCELERATE_AXIS); }
-        public float turning { get => Input.GetAxis(TURN_AXIS); }
+        public float acceleration { get => UInput.GetAxis(ACCELERATE_AXIS); }
+        public float turning { get => UInput.GetAxis(TURN_AXIS); }
+
         public bool isAccelerating { get => acceleration != 0f; }
         public bool isTurning { get => turning != 0f; }
         #endregion
