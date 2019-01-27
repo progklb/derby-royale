@@ -17,6 +17,8 @@ namespace DerbyRoyale.Vehicles
         private const float SLIPPERY_ANGULAR_DRAG = 0.05f;
         private const float TURN_RATE = 25f;
         private const float MAXIMUM_VELOCITY = 100f;
+        private const float FLIP_IMPULSE_STRENGTH = 100f;
+        private const float FLIP_RESET_DURATION = 3f;
 
         private const float MINIMUM_CRASH_VELOCITY = 11f;
         private const float MAXIMUM_CRASH_VELOCITY = 24f;
@@ -50,6 +52,8 @@ namespace DerbyRoyale.Vehicles
         public bool isGrounded { get => RefreshFloorDetection(); }
         public bool isSlipping { get; private set; }
         private bool isReversing { get => vehicleController.acceleration < 0f; }
+        private bool canFlip { get; set; }
+        private bool isFlipping { get => Input.GetAxis("FlipCar") != 0; }
         #endregion
 
 
@@ -97,6 +101,7 @@ namespace DerbyRoyale.Vehicles
             isBoosting = false;
             isArmored = false;
             isSlipping = false;
+            canFlip = true;
         }
 
         public void DamageCar(float damageAmount)
@@ -183,9 +188,14 @@ namespace DerbyRoyale.Vehicles
         #region HELPER FUNCTIONS
         void CarEngine()
         {
-            if (isTrashed || !isGrounded)
+            if (isTrashed)
             {
                 return;
+            }
+
+            if (isFlipping)
+            {
+                FlipCar();
             }
 
             if (vehicleController.isAccelerating)
@@ -266,6 +276,17 @@ namespace DerbyRoyale.Vehicles
             DamageCar(Mathf.Lerp(0f, MAXIMUM_CRASH_DAMAGE, crashDamage));
         }
 
+        void FlipCar()
+        {
+            if (isGrounded || !canFlip)
+            {
+                return;
+            }
+
+            Vector3 randomOffset = -transform.up + new Vector3(Random.Range(-0.1f,0.1f), Random.Range(-0.1f, 0.1f), Random.Range(-0.1f, 0.1f));
+            rigidBody.AddForce(randomOffset * FLIP_IMPULSE_STRENGTH, ForceMode.Impulse);
+        }
+
         IEnumerator RunBoostTimer(float boostDuration)
         {
             isBoosting = true;
@@ -295,6 +316,13 @@ namespace DerbyRoyale.Vehicles
             rigidBody.drag = DEFAULT_DRAG;
             rigidBody.angularDrag = DEFAULT_ANGULAR_DRAG;
             isSlipping = false;
+        }
+
+        IEnumerator RunFlipResetTimer()
+        {
+            canFlip = false;
+            yield return new WaitForSeconds(FLIP_RESET_DURATION);
+            canFlip = true;
         }
         #endregion
     }
