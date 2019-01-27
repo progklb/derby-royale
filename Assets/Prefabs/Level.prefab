@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5116035657124494684}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 7813141512194283658}
   - component: {fileID: 31262542809511882}
   - component: {fileID: 305640763041445773}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stage 3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,7 +143,7 @@ GameObject:
   - component: {fileID: 1524212685806814134}
   - component: {fileID: 518593313233366633}
   - component: {fileID: 305640763041445774}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stage 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -243,7 +243,7 @@ GameObject:
   - component: {fileID: 1405886041306591570}
   - component: {fileID: 971803424364160821}
   - component: {fileID: 305640763041445772}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stage 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -335,7 +335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640763200507080}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -370,7 +370,7 @@ GameObject:
   - component: {fileID: 305640763393097739}
   - component: {fileID: 305640763393097738}
   - component: {fileID: 129411909}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Vehicle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -474,7 +474,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640763502765781}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Size Reference
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 5328564410868519626}
   - component: {fileID: 5747909773634207754}
   - component: {fileID: 305640763041445775}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Stage 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -668,7 +668,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640764013569766}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 305640764414553501}
   - component: {fileID: 305640764414553500}
   - component: {fileID: 805436762}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: House
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -807,7 +807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640764682702697}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -838,7 +838,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 305640764714745680}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -869,7 +869,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2051158016313241836}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -899,7 +899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 758208714717308702}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -929,7 +929,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3896943754845687201}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8492955572413374649}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -989,7 +989,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7161428118909684473}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1019,7 +1019,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3005319779268971393}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Points
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,7 +1057,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2939076284729433119}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1087,7 +1087,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7012048185301596449}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Spawn Point (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1279,6 +1279,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Stage1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2963239810362086100, guid: 20110af8536ec8541b72e58586a38f14,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2009044647959813008, guid: 20110af8536ec8541b72e58586a38f14,
         type: 3}
