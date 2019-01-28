@@ -16,7 +16,7 @@ namespace DerbyRoyale.Levels
 		{
 			Debug.Log($"Starting stage {stage.stageNumber}");
 
-			animator.SetTrigger(STAGE_BEGIN_TRIGGER);
+			animator?.SetTrigger(STAGE_BEGIN_TRIGGER);
 			RaiseStageProgressChanged(StageProgress.Begin);
 
 			yield return null;

@@ -74,8 +74,9 @@ namespace DerbyRoyale.Input
 
 					joystickNamesCache = joystickNames.Clone() as string[];
 
-					yield return new WaitForSeconds(m_JoystickCheckInterval);
 				}
+
+				yield return new WaitForSeconds(m_JoystickCheckInterval);
 			}
 		}
 		#endregion
