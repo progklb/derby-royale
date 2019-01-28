@@ -20,7 +20,6 @@ namespace DerbyRoyale.Input
 		#region PROPERTIES
 		private JoystickMonitor joystickMonitor { get; set; }
 
-		// TODO Enforce min of 1
 		public int maxLocalPlayers { get => m_MaxLocalPlayers; }
 		// TODO Cater for keyboards
 		public int connectedDeviceCount { get => joystickMonitor.connectedJoysticks; }
@@ -28,6 +27,7 @@ namespace DerbyRoyale.Input
 
 
 		#region EDITOR FIELDS
+		[Min(1)]
 		[SerializeField] private int m_MaxLocalPlayers;
 		#endregion
 

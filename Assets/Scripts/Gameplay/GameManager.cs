@@ -162,7 +162,8 @@ namespace DerbyRoyale.Gameplay
 			// Wait until the scene is fully loaded and the level controller been set up.
 			yield return new WaitUntil(() => LevelManager.instance.currentController != null);
 
-			// TODO Spawn player instances
+			// TODO Spawn player instances.
+			SpawnPlayer();
 
 			isRunning = true;
 			onGameStart();

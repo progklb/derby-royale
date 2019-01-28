@@ -26,7 +26,7 @@ namespace DerbyRoyale.Gameplay
 		{
 			for (int i = 0; i < InputManager.instance.connectedDeviceCount && i < InputManager.instance.maxLocalPlayers; ++i)
 			{
-				Debug.Log($"Checking axis:  Join_J{i + 1} : " + UInput.GetAxis($"Join_J{i + 1}"));
+				//Debug.Log($"Checking axis:  Join_J{i + 1} : " + UInput.GetAxis($"Join_J{i + 1}"));
 				if (UInput.GetAxis($"Join_J{i + 1}") > 0.5f)
 				{
 					onPlayerConnect(i + 1);
