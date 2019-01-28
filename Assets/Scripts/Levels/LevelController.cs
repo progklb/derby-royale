@@ -34,7 +34,14 @@ namespace DerbyRoyale.Levels
 				m_Stages[i].stageNumber = i + 1;
 			}
 
-			currentStage.StartStage();
+			if (m_Stages.Length > 0)
+			{
+				currentStage.StartStage();
+			}
+			else
+			{
+				Debug.LogWarning("There are no stages assigned to this level controller.");
+			}
 		}
 
 		void OnDestroy()

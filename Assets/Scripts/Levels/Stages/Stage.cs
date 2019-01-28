@@ -64,7 +64,7 @@ namespace DerbyRoyale.Levels
 		#region PUBLIC API
 		public void StartStage()
 		{
-			stageBehaviour.StartBehavior();
+			stageBehaviour?.StartBehavior();
 		}
 		#endregion
 	}

@@ -27,7 +27,7 @@ namespace DerbyRoyale.Input
 
 
 		#region EDITOR FIELDS
-		[Min(1)]
+		[Range(1, 8)]
 		[SerializeField] private int m_MaxLocalPlayers;
 		#endregion
 
