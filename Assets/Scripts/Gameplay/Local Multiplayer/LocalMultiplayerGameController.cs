@@ -1,0 +1,159 @@
+﻿using UnityEngine;
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+using DerbyRoyale.Levels;
+using DerbyRoyale.Players;
+using DerbyRoyale.Scenes;
+using DerbyRoyale.Vehicles;
+
+using URandom = UnityEngine.Random;
+
+namespace DerbyRoyale.Gameplay
+{
+	/// <summary>
+	/// A controller for local multiplayer gameplay types.
+	/// </summary>
+	public class LocalMultiplayerGameController : GameController
+	{
+		#region PROPERTIES
+		public int playerCount { get => currentPlayers.Count; }
+		public Dictionary<int, Player> currentPlayers { get; private set; } = new Dictionary<int, Player>();
+
+		// TODO Need a more final solution. Suggest camera rig to be spawned with each player to offer dynamic split-screen.
+		public DerbyCar playerInstance
+		{
+			get => GameManager.instance.playerInstance;
+			set => GameManager.instance.playerInstance = value;
+		}
+		#endregion
+
+
+		#region UNITY EVENTS
+		protected void Awake()
+		{
+			LocalPlayerConnect.onPlayerConnect += HandlePlayerConnect;
+
+			DerbyCar.onSpawn += HandlePlayerSpawn;
+			DerbyCar.onDeath += HandlePlayerDeath;
+		}
+
+		protected void OnDestroy()
+		{
+			LocalPlayerConnect.onPlayerDisconnect -= HandlePlayerDisconnect;
+
+			DerbyCar.onSpawn -= HandlePlayerSpawn;
+			DerbyCar.onDeath -= HandlePlayerDeath;
+		}
+		#endregion
+
+
+		#region EVENT HANDLERS
+		protected override void HandlePlayerConnect(int playerIndex)
+		{
+			if (!currentPlayers.ContainsKey(playerIndex))
+			{
+				Debug.LogError("Connecting to game: " + playerIndex);
+				currentPlayers.Add(playerIndex, new Player(playerIndex));
+			}
+		}
+
+		protected override void HandlePlayerDisconnect(int playerIndex)
+		{
+			if (currentPlayers.ContainsKey(playerIndex))
+			{
+				Debug.LogError("Disconnecting from game: " + playerIndex);
+				currentPlayers.Remove(playerIndex);
+
+				// TODO Despawn. Check if we are the last player and handle leaving the game if so.
+			}
+		}
+
+		protected override void HandlePlayerSpawn(DerbyCar player)
+		{
+			//numberOfPlayers++;
+		}
+
+		protected override void HandlePlayerDeath(DerbyCar player)
+		{
+			//numberOfPlayers--;
+
+			// REFACTOR
+			// If the player has died, check whether we were the last survivor on the map.
+			if (player == playerInstance)
+			{
+				//onGameOver(numberOfPlayers == 0 ? GameOverCondition.LastSurvivor : GameOverCondition.Died);
+			}
+			// If another player has died, check if we were the last survivor
+			//else if (numberOfPlayers == 1)
+			{
+				RaiseOnGameOver(GameOverCondition.LastSurvivor);
+			}
+		}
+		#endregion
+
+
+		#region PUBLIC API
+		public override void StartGame()
+		{
+			if (playerCount < 2)
+			{
+				Debug.LogError("Cannot start game with less than 2 players.");
+				//return;
+			}
+
+			StartCoroutine(StartGameSequence());
+		}
+
+		public override void EndGame()
+		{
+			Reset();
+
+			SceneManager.instance.UnloadScene(SceneType.GameScene);
+
+			base.EndGame();
+		}
+
+		public override void Reset()
+		{
+			base.Reset();
+
+			// TODO Remove playerInstance
+			if (playerInstance != null)
+			{
+				Destroy(playerInstance.gameObject);
+			}
+
+			playerInstance = null;
+
+			currentPlayers.Clear();
+		}
+		#endregion
+
+
+		#region HELPER FUNCTIONS
+		void SpawnPlayer()
+		{
+			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
+			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
+
+			playerInstance = Instantiate(GameManager.instance.playerPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+		}
+
+		IEnumerator StartGameSequence()
+		{
+			SceneManager.instance.LoadScene(SceneType.GameScene);
+
+			// Wait until the scene is fully loaded and the level controller been set up.
+			yield return new WaitUntil(() => LevelManager.instance.currentController != null);
+
+			// TODO Spawn all player instances.
+			SpawnPlayer();
+
+			base.EndGame();
+		}
+		#endregion
+	}
+}

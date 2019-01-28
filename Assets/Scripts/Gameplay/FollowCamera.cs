@@ -12,7 +12,7 @@ namespace DerbyRoyale.Gameplay
 		#region PROPERTIES
 		private Transform target { get => m_Target; }
 
-		private DerbyCar player { get => GameManager.instance?.playerInstance; }
+		private DerbyCar player { get => GameManager.instance.playerInstance; }
 		#endregion
 
 
