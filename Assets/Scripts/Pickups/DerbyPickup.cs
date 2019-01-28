@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+using DerbyRoyale.Vehicles;
+
 namespace DerbyRoyale.Pickups
 {
     [RequireComponent(typeof(PickupBehaviour))]
@@ -30,11 +32,31 @@ namespace DerbyRoyale.Pickups
         #region UNITY EVENTS
         void OnCollisionEnter(Collision col)
         {
-            if (col.gameObject.tag == Tags.PLAYER_TAG)
+            ConsumePickup(col);
+        }
+        #endregion
+
+
+        #region PUBLIC API
+        public void SpawnPickup()
+        {
+            pickupAnimator.SetTrigger(SPAWNED_TRIGGER);
+            hasSpawned = true;
+        }
+        #endregion
+
+
+        #region HELPER FUNCTIONS
+        void ConsumePickup(Collision collision)
+        {
+            if (collision.gameObject.tag == Tags.PLAYER_TAG)
             {
                 if (hasSpawned)
                 {
-
+                    var derbyCar = collision.gameObject.GetComponent<DerbyCar>();
+                    derbyCar.AddCarPickup(pickupBehaviour);
+                    pickupAnimator.SetTrigger(PICKED_UP_TRIGGER);
+                    hasSpawned = false;
                 }
             }
         }
