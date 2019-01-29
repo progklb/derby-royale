@@ -18,9 +18,12 @@ namespace DerbyRoyale.Gameplay
 
 		#region EDITOR FIELDS
 		[SerializeField] private Transform m_Target;
-
+		[Space]
 		[SerializeField] private Vector3 m_PositionOffset;
+		[SerializeField] private float m_LookAtYOffset;
+		[Space]
 		[SerializeField] private float m_PositionSmoothing = 0.15f;
+		[SerializeField] private float m_LookAtSmoothing = 0.15f;
 
 		private Vector3 m_Velocity;
 		#endregion
@@ -36,7 +39,8 @@ namespace DerbyRoyale.Gameplay
 				targetPosition.y = target.position.y + m_PositionOffset.y;
 				transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref m_Velocity, m_PositionSmoothing);
 
-				transform.LookAt(target);
+				var targetLookAt = Quaternion.LookRotation(m_Target.position + new Vector3(0f, m_LookAtYOffset, 0f) - transform.position, Vector3.up);
+				transform.rotation = Quaternion.Lerp(transform.rotation, targetLookAt, Time.deltaTime * m_LookAtSmoothing);
 			}
 			else if (player != null)
 			{

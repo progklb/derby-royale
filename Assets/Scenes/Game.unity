@@ -401,8 +401,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Target: {fileID: 0}
-  m_PositionOffset: {x: 0, y: 8, z: -6}
+  m_PositionOffset: {x: 0, y: 3.5, z: -4}
+  m_LookAtYOffset: 1.6
   m_PositionSmoothing: 0.15
+  m_LookAtSmoothing: 12
 --- !u!81 &1143519334
 AudioListener:
   m_ObjectHideFlags: 0
