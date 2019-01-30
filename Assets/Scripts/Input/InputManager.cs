@@ -1,34 +1,23 @@
 ﻿using UnityEngine;
 
-using System;
-
-using UInput = UnityEngine.Input;
+using DerbyRoyale.Utilities;
 
 namespace DerbyRoyale.Input
 {
 	[RequireComponent(typeof(JoystickMonitor))]
 	public class InputManager : Manager<InputManager>
 	{
-		// Possible input sets:
-		// Controller (Start)
-		// WASD, IJKL, arrows, numpad
-
 		#region EVENTS
-		public static event Action<int, bool> onDeviceConnectionChanged = delegate { };
+		public delegate void JoystickConnectionChanged(int index, bool connected);
+
+		/// Raised when a joystick device is connected or disconnected.
+		public static event JoystickConnectionChanged onJoystickConnectionChanged;
 		#endregion
 
 		#region PROPERTIES
 		private JoystickMonitor joystickMonitor { get; set; }
 
-		public int maxLocalPlayers { get => m_MaxLocalPlayers; }
-		// TODO Cater for keyboards
-		public int connectedDeviceCount { get => joystickMonitor.connectedJoysticks; }
-		#endregion
-
-
-		#region EDITOR FIELDS
-		[Range(1, 8)]
-		[SerializeField] private int m_MaxLocalPlayers;
+		public int connectedJoysticksCount { get => joystickMonitor.connectedJoysticks; }
 		#endregion
 
 
@@ -53,7 +42,15 @@ namespace DerbyRoyale.Input
 		#region EVENT HANDLERS
 		void HandleJoystickConnectionChanged(int idx, string displayName, bool connected)
 		{
-			onDeviceConnectionChanged(idx, connected);
+			onJoystickConnectionChanged(idx, connected);
+		}
+		#endregion
+
+
+		#region PUBLIC API
+		public static string GetAxisName(InputType type, InputSet set)
+		{
+			return string.Format($"{type.GetDescription()}{set.GetDescription()}");
 		}
 		#endregion
 	}

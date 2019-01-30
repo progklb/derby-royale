@@ -11,32 +11,49 @@ namespace DerbyRoyale.Gameplay
 	public class LocalPlayerConnect : MonoBehaviour
 	{
 		#region EVENTS
-		public static event Action<int> onPlayerConnect = delegate { };
-		public static event Action<int> onPlayerDisconnect = delegate { };
+		public delegate void PlayerConnectionChanged(int playerIndex);
+
+		public static event PlayerConnectionChanged onPlayerConnect = delegate { };
+		public static event PlayerConnectionChanged onPlayerDisconnect = delegate { };
+		#endregion
+
+
+		#region PROPERTIES
+		/// If true, input from all input sources will be checked for any player's waiting to join.
+		public bool isScanning { get; set; }
+		
+		/// A cache of all input set appendices to check against for input.
+		private InputSet[] inputSetList { get; set; }
 		#endregion
 
 
 		#region UNITY EVENTS
 		void Start()
 		{
-			InputManager.onDeviceConnectionChanged += HandleDeviceConnectionChanged;
+			inputSetList = (InputSet[])Enum.GetValues(typeof(InputSet));
+
+			InputManager.onJoystickConnectionChanged += HandleDeviceConnectionChanged;
 		}
 
 		void Update()
 		{
-			for (int i = 0; i < InputManager.instance.connectedDeviceCount && i < InputManager.instance.maxLocalPlayers; ++i)
+			if (isScanning)
 			{
-				//Debug.Log($"Checking axis:  Join_J{i + 1} : " + UInput.GetAxis($"Join_J{i + 1}"));
-				if (UInput.GetAxis($"Join_J{i + 1}") > 0.5f)
+				for (int i = 0; i < inputSetList.Length; ++i)
 				{
-					onPlayerConnect(i + 1);
+					var axisName = InputManager.GetAxisName(InputType.Fire, inputSetList[i]);
+
+					if (UInput.GetAxis(axisName) > 0.1f)
+					{
+						onPlayerConnect(i + 1);
+					}
 				}
 			}
 		}
 
 		void OnDestroy()
 		{
-			InputManager.onDeviceConnectionChanged -= HandleDeviceConnectionChanged;
+			InputManager.onJoystickConnectionChanged -= HandleDeviceConnectionChanged;
 		}
 		#endregion
 

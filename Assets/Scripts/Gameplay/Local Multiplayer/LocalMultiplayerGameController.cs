@@ -16,6 +16,7 @@ namespace DerbyRoyale.Gameplay
 	/// <summary>
 	/// A controller for local multiplayer gameplay types.
 	/// </summary>
+	[RequireComponent(typeof(LocalPlayerConnect))]
 	public class LocalMultiplayerGameController : GameController
 	{
 		#region PROPERTIES
@@ -28,12 +29,25 @@ namespace DerbyRoyale.Gameplay
 			get => GameManager.instance.playerInstance;
 			set => GameManager.instance.playerInstance = value;
 		}
+
+		public int maxLocalPlayers { get => m_MaxLocalPlayers; }
+
+		private LocalPlayerConnect localPlayerConnect { get; set; }
+		#endregion
+
+
+		#region EDITOR FIELDS
+		[Range(1, 8)]
+		[SerializeField] private int m_MaxLocalPlayers = 2;
 		#endregion
 
 
 		#region UNITY EVENTS
 		protected void Awake()
 		{
+			localPlayerConnect = GetComponent<LocalPlayerConnect>();
+			localPlayerConnect.isScanning = true;
+
 			LocalPlayerConnect.onPlayerConnect += HandlePlayerConnect;
 
 			DerbyCar.onSpawn += HandlePlayerSpawn;
@@ -55,8 +69,11 @@ namespace DerbyRoyale.Gameplay
 		{
 			if (!currentPlayers.ContainsKey(playerIndex))
 			{
-				Debug.LogError("Connecting to game: " + playerIndex);
+				Debug.Log($"Connecting to game: player ID {playerIndex}");
 				currentPlayers.Add(playerIndex, new Player(playerIndex));
+
+				// Disable scanning for input for players joining if number max players have joined.
+				localPlayerConnect.isScanning = playerCount < maxLocalPlayers;
 			}
 		}
 
@@ -64,8 +81,11 @@ namespace DerbyRoyale.Gameplay
 		{
 			if (currentPlayers.ContainsKey(playerIndex))
 			{
-				Debug.LogError("Disconnecting from game: " + playerIndex);
+				Debug.Log($"Disconnecting from game: player ID  {playerIndex}");
 				currentPlayers.Remove(playerIndex);
+
+				// Reenable scanning for input for players joining 
+				localPlayerConnect.isScanning = true;
 
 				// TODO Despawn. Check if we are the last player and handle leaving the game if so.
 			}

@@ -7,6 +7,9 @@ using UInput = UnityEngine.Input;
 
 namespace DerbyRoyale.Input
 {
+	/// <summary>
+	/// Monitors connected joysticks for connect/disconnect and notifies when changes occur.
+	/// </summary>
 	public class JoystickMonitor : MonoBehaviour
 	{
 		#region EVENTS
@@ -18,12 +21,11 @@ namespace DerbyRoyale.Input
 
 
 		#region PROPERTIES
-		/// Number of connected devices.
+		/// Number of connected joystick controllers that are currently active.
 		public int connectedJoysticks { get; private set; }
 
 		/// Unity's joystick list.
 		private string[] joystickNames { get => UInput.GetJoystickNames(); }
-
 		/// A cache of Unity's joystick list from the previous frame, for detecting connection changes.
 		private string[] joystickNamesCache { get; set; }
 		#endregion
@@ -73,7 +75,6 @@ namespace DerbyRoyale.Input
 					}
 
 					joystickNamesCache = joystickNames.Clone() as string[];
-
 				}
 
 				yield return new WaitForSeconds(m_JoystickCheckInterval);

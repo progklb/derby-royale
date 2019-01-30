@@ -65,6 +65,7 @@ namespace DerbyRoyale.Vehicles
         public bool isSlipping { get; private set; }
         private bool isReversing { get => vehicleController.acceleration < 0f; set { isReversing = value; } }
         private bool canFlip { get; set; }
+		// TODO Replace with call to input system axis.
         private bool isFlipping { get => UInput.GetKeyDown(KeyCode.Space); set { isFlipping = value; } }
         private bool hasPickup { get => currentPickup != null; set { hasPickup = value; } }
 
