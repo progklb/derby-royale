@@ -1,47 +1,48 @@
 ﻿using UnityEngine;
 
+using System.Collections;
+
 using DerbyRoyale.Vehicles;
 
 namespace DerbyRoyale.Pickups
 {
-    [RequireComponent(typeof(PickupBehaviour))]
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(BoxCollider), typeof(MeshFilter), typeof (MeshRenderer))]
     [AddComponentMenu("Derby Royale/Pickups/Derby Pickup")]
     public sealed class DerbyPickup : MonoBehaviour
     {
         #region CONSTANTS
-        private const string SPAWNED_TRIGGER = "Spawned";
         private const string PICKED_UP_TRIGGER = "PickedUp";
+        private const string PICKUP_CONSUMED_BOOL = "PickupConsumed";
         #endregion
 
 
         #region PROPERTIES
-        private bool hasSpawned { get; set; }
-        private PickupBehaviour pickupBehaviour { get => m_PickupBehaviour ?? (m_PickupBehaviour = GetComponent<PickupBehaviour>()); set => m_PickupBehaviour = value; }
+        private PickupBehaviour[] pickupEffects { get => m_PickupEffects ?? (m_PickupEffects = GetComponents<PickupBehaviour>()); set => m_PickupEffects = value; }
         private Animator pickupAnimator { get => m_PickupAnimator ?? (m_PickupAnimator = GetComponent<Animator>()); set => m_PickupAnimator = value; }
+        private bool pickupActive { get; set; }
+        private bool pickupConsumed { get => pickupAnimator.GetBool(PICKUP_CONSUMED_BOOL); }
         #endregion
 
 
         #region VARIABLES
-        private PickupBehaviour m_PickupBehaviour;
+        private PickupBehaviour[] m_PickupEffects;
         private Animator m_PickupAnimator;
         #endregion
 
 
         #region UNITY EVENTS
+        void Start()
+        {
+            pickupActive = true;
+        }
+
         void OnCollisionEnter(Collision col)
         {
-            ConsumePickup(col);
-        }
-        #endregion
-
-
-        #region PUBLIC API
-        public void SpawnPickup()
-        {
-            pickupAnimator.SetTrigger(SPAWNED_TRIGGER);
-            hasSpawned = true;
+            if (pickupActive)
+            {
+                ConsumePickup(col);
+            }
         }
         #endregion
 
@@ -51,14 +52,21 @@ namespace DerbyRoyale.Pickups
         {
             if (collision.gameObject.tag == Tags.PLAYER_TAG)
             {
-                if (hasSpawned)
+                var derbyCar = collision.gameObject.GetComponent<DerbyCar>();
+
+                if (pickupEffects != null)
                 {
-                    var derbyCar = collision.gameObject.GetComponent<DerbyCar>();
-                    derbyCar.AddCarPickup(pickupBehaviour);
-                    pickupAnimator.SetTrigger(PICKED_UP_TRIGGER);
-                    hasSpawned = false;
+                    derbyCar.AddCarPickup(pickupEffects);
                 }
             }
+        }
+
+        IEnumerator DestroyPickup()
+        {
+            pickupActive = false;
+            pickupAnimator.SetTrigger(PICKED_UP_TRIGGER);
+            yield return new WaitUntil(() => pickupConsumed);
+            Destroy(gameObject);
         }
         #endregion
     }

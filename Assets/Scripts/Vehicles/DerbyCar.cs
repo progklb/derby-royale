@@ -69,7 +69,7 @@ namespace DerbyRoyale.Vehicles
         private bool isFlipping { get => UInput.GetKeyDown(KeyCode.Space); set { isFlipping = value; } }
         private bool hasPickup { get => currentPickup != null; set { hasPickup = value; } }
 
-        private PickupBehaviour currentPickup { get; set; }
+        private PickupBehaviour[] currentPickup { get; set; }
         #endregion
 
 
@@ -175,7 +175,7 @@ namespace DerbyRoyale.Vehicles
             }
         }
 
-        public bool AddCarPickup(PickupBehaviour newPickup, bool overrideCurrentPickup = false)
+        public bool AddCarPickup(PickupBehaviour[] newPickup, bool overrideCurrentPickup = false)
         {
             if (isTrashed)
             {
@@ -194,7 +194,10 @@ namespace DerbyRoyale.Vehicles
         {
             if (hasPickup && !isTrashed)
             {
-                currentPickup.UsePickup(this);
+                foreach(PickupBehaviour pickupEffect in currentPickup)
+                {
+                    pickupEffect.UsePickup(this);
+                }
                 currentPickup = null;
             }
         }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &6196577013144728476
+--- !u!1 &6356162033934965166
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6196577013144728475}
-  - component: {fileID: 6196577013144728474}
+  - component: {fileID: 6356162033934965164}
+  - component: {fileID: 6356162033934965167}
   m_Layer: 0
   m_Name: Pickup Controller
   m_TagString: Untagged
@@ -17,35 +17,34 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6196577013144728475
+--- !u!4 &6356162033934965164
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196577013144728476}
+  m_GameObject: {fileID: 6356162033934965166}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 49.93219, y: 14.7338295, z: -75.71236}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6196577013144728474
+--- !u!114 &6356162033934965167
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6196577013144728476}
+  m_GameObject: {fileID: 6356162033934965166}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 895e9389c9ee07644abdd9e19483405e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_DerbyPickups:
-  - {fileID: 3033683930543356627, guid: bb92f9a7a92e9514e83715a3100ada86, type: 3}
-  - {fileID: 3033683930543356627, guid: 52b1abd5a6582e64184f0fe64132b2e1, type: 3}
-  - {fileID: 3033683930543356627, guid: ddc3b17ce4ff7854bb2fbdeb8cf661a3, type: 3}
-  - {fileID: 3033683930543356627, guid: d967b436eaca90545bcf5d6148e5b3ff, type: 3}
-  - {fileID: 3033683930543356627, guid: 4b3b2dd299d7bd8439783a9ae483d491, type: 3}
+  m_SpawnOnStart: 1
+  m_SpawnBeforeDelay: 1
+  m_MinimumSpawnDelay: 15
+  m_MaximumSpawnDelay: 30
+  m_PickupSpawners: []
