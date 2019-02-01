@@ -2,7 +2,7 @@
 
 using DerbyRoyale.Vehicles;
 
-namespace DerbyRoyale.Pickups
+namespace DerbyRoyale.Pickups.PickupBehaviours
 {
     [AddComponentMenu("Derby Royale/Pickups/Pickup Behaviours/Slide Behaviour")]
     public class SlideBehaviour : PickupBehaviour
