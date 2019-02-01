@@ -12,6 +12,7 @@ namespace DerbyRoyale.Pickups
     public sealed class DerbyPickup : MonoBehaviour
     {
         #region CONSTANTS
+        private const string LANDED_TRIGGER = "Landed";
         private const string PICKED_UP_TRIGGER = "PickedUp";
         private const string PICKUP_CONSUMED_BOOL = "PickupConsumed";
         #endregion
