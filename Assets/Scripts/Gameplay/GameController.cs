@@ -28,7 +28,7 @@ namespace DerbyRoyale.Gameplay
 
 		public LevelController levelController { get => LevelManager.instance?.currentController; }
 
-		public GameState gameState { get; protected set; }
+		public GameState gameState { get; protected set; } = GameState.Stopped;
 		#endregion
 
 

@@ -12,17 +12,6 @@ namespace DerbyRoyale.Gameplay
 	/// </summary>
 	public class GameManager : Manager<GameManager>
 	{
-		#region EVENTS
-		/// Raised when the game is loaded.
-		public static event Action onGameStart = delegate { };
-		/// Raised when the game is unloaded.
-		public static event Action onGameEnd = delegate { };
-
-		/// Raised when the game ends due to gameplay conditions.
-		public static event Action<GameOverCondition> onGameOver = delegate { };
-		#endregion
-
-
 		#region PROPERTIES
 		public GameController gameController { get => m_GameController; }
 		public LevelController levelController { get => LevelManager.instance?.currentController; }

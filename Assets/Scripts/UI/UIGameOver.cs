@@ -22,12 +22,12 @@ namespace DerbyRoyale.UI
 		#region UNITY EVENTS
 		void Start()
 		{
-			GameManager.onGameOver += HandleGameOver;
+			GameController.onGameOver += HandleGameOver;
 		}
 
 		void OnDestroy()
 		{
-			GameManager.onGameOver -= HandleGameOver;
+			GameController.onGameOver -= HandleGameOver;
 		}
 		#endregion
 

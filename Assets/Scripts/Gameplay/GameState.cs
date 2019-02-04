@@ -5,7 +5,7 @@
 	/// </summary>
 	public enum GameState
 	{
-		Playing,
-		Stopped
+		Stopped,
+		Playing
 	}
 }

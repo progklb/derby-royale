@@ -74,6 +74,11 @@ namespace DerbyRoyale.Gameplay
 
 				// Disable scanning for input for players joining if number max players have joined.
 				localPlayerConnect.isScanning = playerCount < maxLocalPlayers;
+
+				if (playerCount > 0 && gameState != GameState.Playing)
+				{
+					gameManager.StartGame();
+				}
 			}
 		}
 
@@ -125,6 +130,8 @@ namespace DerbyRoyale.Gameplay
 			}
 
 			StartCoroutine(StartGameSequence());
+
+			base.StartGame();
 		}
 
 		public override void EndGame()
@@ -171,8 +178,6 @@ namespace DerbyRoyale.Gameplay
 
 			// TODO Spawn all player instances.
 			SpawnPlayer();
-
-			base.EndGame();
 		}
 		#endregion
 	}
