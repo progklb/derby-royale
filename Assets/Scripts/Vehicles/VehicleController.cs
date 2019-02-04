@@ -8,8 +8,8 @@ namespace DerbyRoyale.Vehicles
     public class VehicleController : MonoBehaviour
     {
         #region PROPERTIES
-        private const string ACCELERATE_AXIS = "Vertical";
-        private const string TURN_AXIS = "Horizontal";
+        private const string ACCELERATE_AXIS = "Vertical_K1";
+        private const string TURN_AXIS = "Horizontal_K1";
         #endregion
 
 
