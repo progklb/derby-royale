@@ -65,6 +65,11 @@ namespace DerbyRoyale.Gameplay
 
 
 		#region HELPER FUNCTIONS
+		protected void RaiseOnGameEnd()
+		{
+			onGameEnd();
+		}
+
 		protected void RaiseOnGameOver(GameOverCondition condition)
 		{
 			onGameOver(condition);

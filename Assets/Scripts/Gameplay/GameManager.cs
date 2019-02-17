@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-using System;
-
 using DerbyRoyale.Levels;
 using DerbyRoyale.Vehicles;
 
@@ -19,16 +17,13 @@ namespace DerbyRoyale.Gameplay
 		public GameState gameState { get => gameController?.gameState ?? GameState.Stopped; }
 
 		public DerbyCar playerPrefab { get => m_PlayerPrefab; }
-
-		// TODO REFACTOR This is for prototyping purposes.
-		public DerbyCar playerInstance { get; set; }
 		#endregion
 
 
 		#region EDITOR FIELDS
 		[SerializeField] private DerbyCar m_PlayerPrefab;
 
-		// TODO Develop final solution.
+		// TODO Instantiate a controller at runtime based on selected game mode.
 		[Header("For Development")]
 		[SerializeField] private GameController m_GameController;
 		#endregion

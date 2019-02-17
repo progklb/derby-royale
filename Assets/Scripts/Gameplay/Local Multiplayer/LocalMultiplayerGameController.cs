@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using DerbyRoyale.Cameras;
 using DerbyRoyale.Levels;
 using DerbyRoyale.Players;
 using DerbyRoyale.Scenes;
@@ -23,13 +24,6 @@ namespace DerbyRoyale.Gameplay
 		public int playerCount { get => currentPlayers.Count; }
 		public Dictionary<int, Player> currentPlayers { get; private set; } = new Dictionary<int, Player>();
 
-		// TODO Need a more final solution. Suggest camera rig to be spawned with each player to offer dynamic split-screen.
-		public DerbyCar playerInstance
-		{
-			get => GameManager.instance.playerInstance;
-			set => GameManager.instance.playerInstance = value;
-		}
-
 		public int maxLocalPlayers { get => m_MaxLocalPlayers; }
 
 		private LocalPlayerConnect localPlayerConnect { get; set; }
@@ -37,7 +31,7 @@ namespace DerbyRoyale.Gameplay
 
 
 		#region EDITOR FIELDS
-		[Range(1, 8)]
+		[Range(1, 4)]
 		[SerializeField] private int m_MaxLocalPlayers = 2;
 		#endregion
 
@@ -49,6 +43,7 @@ namespace DerbyRoyale.Gameplay
 			localPlayerConnect.isScanning = true;
 
 			LocalPlayerConnect.onPlayerConnect += HandlePlayerConnect;
+			LocalPlayerConnect.onPlayerDisconnect += HandlePlayerDisconnect;
 
 			DerbyCar.onSpawn += HandlePlayerSpawn;
 			DerbyCar.onDeath += HandlePlayerDeath;
@@ -56,6 +51,7 @@ namespace DerbyRoyale.Gameplay
 
 		protected void OnDestroy()
 		{
+			LocalPlayerConnect.onPlayerConnect -= HandlePlayerConnect;
 			LocalPlayerConnect.onPlayerDisconnect -= HandlePlayerDisconnect;
 
 			DerbyCar.onSpawn -= HandlePlayerSpawn;
@@ -70,15 +66,20 @@ namespace DerbyRoyale.Gameplay
 			if (!currentPlayers.ContainsKey(playerIndex))
 			{
 				Debug.Log($"Connecting to game: player ID {playerIndex}");
-				currentPlayers.Add(playerIndex, new Player(playerIndex));
+				var player = new Player(playerIndex);
+				currentPlayers.Add(playerIndex, player);
 
-				// Disable scanning for input for players joining if number max players have joined.
-				localPlayerConnect.isScanning = playerCount < maxLocalPlayers;
-
-				if (playerCount > 0 && gameState != GameState.Playing)
+				if (gameState != GameState.Playing)
 				{
 					gameManager.StartGame();
 				}
+				else
+				{
+					SpawnPlayer(player);
+				}
+
+				// Disable scanning for input for players joining if number max players have joined.
+				localPlayerConnect.isScanning = playerCount < maxLocalPlayers;
 			}
 		}
 
@@ -86,36 +87,34 @@ namespace DerbyRoyale.Gameplay
 		{
 			if (currentPlayers.ContainsKey(playerIndex))
 			{
+				if (gameState == GameState.Playing)
+				{
+					Despawn(currentPlayers[playerIndex]);
+				}
+
 				Debug.Log($"Disconnecting from game: player ID  {playerIndex}");
 				currentPlayers.Remove(playerIndex);
 
 				// Reenable scanning for input for players joining 
 				localPlayerConnect.isScanning = true;
 
-				// TODO Despawn. Check if we are the last player and handle leaving the game if so.
+				
+
+				if (playerCount == 0)
+				{
+					RaiseOnGameEnd();
+				}
 			}
 		}
 
 		protected override void HandlePlayerSpawn(DerbyCar player)
 		{
-			//numberOfPlayers++;
 		}
 
 		protected override void HandlePlayerDeath(DerbyCar player)
 		{
-			//numberOfPlayers--;
-
-			// REFACTOR
-			// If the player has died, check whether we were the last survivor on the map.
-			if (player == playerInstance)
-			{
-				//onGameOver(numberOfPlayers == 0 ? GameOverCondition.LastSurvivor : GameOverCondition.Died);
-			}
-			// If another player has died, check if we were the last survivor
-			//else if (numberOfPlayers == 1)
-			{
-				RaiseOnGameOver(GameOverCondition.LastSurvivor);
-			}
+			// TODO Handle
+			RaiseOnGameOver(GameOverCondition.LastSurvivor);
 		}
 		#endregion
 
@@ -147,13 +146,10 @@ namespace DerbyRoyale.Gameplay
 		{
 			base.Reset();
 
-			// TODO Remove playerInstance
-			if (playerInstance != null)
+			foreach (var player in currentPlayers.Values)
 			{
-				Destroy(playerInstance.gameObject);
+				Despawn(player);
 			}
-
-			playerInstance = null;
 
 			currentPlayers.Clear();
 		}
@@ -161,14 +157,6 @@ namespace DerbyRoyale.Gameplay
 
 
 		#region HELPER FUNCTIONS
-		void SpawnPlayer()
-		{
-			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
-			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
-
-			playerInstance = Instantiate(GameManager.instance.playerPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-		}
-
 		IEnumerator StartGameSequence()
 		{
 			SceneManager.instance.LoadScene(SceneType.GameScene);
@@ -176,8 +164,27 @@ namespace DerbyRoyale.Gameplay
 			// Wait until the scene is fully loaded and the level controller been set up.
 			yield return new WaitUntil(() => LevelManager.instance.currentController != null);
 
-			// TODO Spawn all player instances.
-			SpawnPlayer();
+			foreach (var player in currentPlayers.Values)
+			{
+				SpawnPlayer(player);
+			}
+		}
+
+		void SpawnPlayer(Player player)
+		{
+			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
+			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
+
+			player.playerInstance = Instantiate(GameManager.instance.playerPrefab, spawnPoint.position, spawnPoint.rotation, transform);
+
+			CameraManager.instance.Add(player);
+		}
+		
+		void Despawn(Player player)
+		{
+			CameraManager.instance.Remove(player);
+
+			Destroy(player.playerInstance.gameObject);
 		}
 		#endregion
 	}
