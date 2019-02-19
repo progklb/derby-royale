@@ -53,7 +53,7 @@ namespace DerbyRoyale.Pickups
         {
             if (collision.gameObject.tag == Tags.PLAYER_TAG)
             {
-                var derbyCar = collision.gameObject.GetComponent<DerbyCar>();
+                var derbyCar = collision.gameObject.GetComponent<Vehicle>();
 
                 if (pickupEffects != null)
                 {

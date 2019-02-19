@@ -7,7 +7,7 @@ namespace DerbyRoyale.Input
 	/// </summary>
 	public enum InputType
 	{
-		[Description("Horizonal")] Horizontal,
+		[Description("Horizontal")] Horizontal,
 		[Description("Vertical")] Vertical,
 		[Description("Recover")] Recover,
 		[Description("Fire")] Fire

@@ -1,24 +1,31 @@
 ﻿using UnityEngine;
 
+using DerbyRoyale.Input;
+
 using UInput = UnityEngine.Input;
 
 namespace DerbyRoyale.Vehicles
 {
     [AddComponentMenu("Derby Royale/Vehicles/Vehicle Controller")]
+	[RequireComponent(typeof(Vehicle))]
     public class VehicleController : MonoBehaviour
     {
-        #region PROPERTIES
-        private const string ACCELERATE_AXIS = "Vertical_K1";
-        private const string TURN_AXIS = "Horizontal_K1";
-        #endregion
+		#region VARIABLES
+		public Vehicle vehicle { get; private set; }
 
-
-        #region VARIABLES
-        public float acceleration { get => UInput.GetAxis(ACCELERATE_AXIS); }
-        public float turning { get => UInput.GetAxis(TURN_AXIS); }
+		public float acceleration { get => vehicle?.player?.GetInput(InputType.Vertical) ?? 0f; }
+        public float turning { get => vehicle?.player?.GetInput(InputType.Horizontal) ?? 0f; }
 
         public bool isAccelerating { get => acceleration != 0f; }
         public bool isTurning { get => turning != 0f; }
-        #endregion
-    }
+		#endregion
+
+
+		#region UNITY EVENTS
+		void Start()
+		{
+			vehicle = GetComponent<Vehicle>();
+		}
+		#endregion
+	}
 }

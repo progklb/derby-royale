@@ -14,7 +14,7 @@ namespace DerbyRoyale.Utilities
 		{
 			if (col.gameObject.tag == Tags.PLAYER_TAG)
 			{
-				col.gameObject.GetComponentInChildren<DerbyCar>().TrashCar();
+				col.gameObject.GetComponentInChildren<Vehicle>().TrashCar();
 			}
 			else
 			{

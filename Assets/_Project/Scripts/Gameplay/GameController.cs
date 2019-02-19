@@ -41,9 +41,9 @@ namespace DerbyRoyale.Gameplay
 
 		// TODO Change these for Player objects.
 
-		protected virtual void HandlePlayerSpawn(DerbyCar player) { }
+		protected virtual void HandlePlayerSpawn(Vehicle player) { }
 
-		protected virtual void HandlePlayerDeath(DerbyCar player)  { }
+		protected virtual void HandlePlayerDeath(Vehicle player)  { }
 		#endregion
 
 

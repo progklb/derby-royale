@@ -20,7 +20,7 @@ namespace DerbyRoyale.Pickups.PickupBehaviours
 
 
         #region PUBLIC API
-        public override void UsePickup(DerbyCar owningDerbyCar)
+        public override void UsePickup(Vehicle owningDerbyCar)
         {
             owningDerbyCar.ApplyCarArmor(armoredDuration);
         }

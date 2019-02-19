@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 
+using DerbyRoyale.Input;
 using DerbyRoyale.Vehicles;
+
+using UInput = UnityEngine.Input;
 
 namespace DerbyRoyale.Players
 {
@@ -15,7 +18,7 @@ namespace DerbyRoyale.Players
 		public int playerIndex { get; private set; }
 
 		/// A spawned instance of this player.
-		public DerbyCar playerInstance { get; set; }
+		public Vehicle vehicleInstance { get; private set; }
 		#endregion
 
 
@@ -23,6 +26,25 @@ namespace DerbyRoyale.Players
 		public Player(int index)
 		{
 			playerIndex = index;
+		}
+		#endregion
+
+
+		#region PUBLIC  API
+		public void SetVehicleInstance(Vehicle vehicle)
+		{
+			vehicleInstance = vehicle;
+			vehicle.Initialise(this);
+		}
+
+		public void ClearVehicleInstance()
+		{
+			vehicleInstance = null;
+		}
+
+		public float GetInput(InputType type)
+		{
+			return UInput.GetAxis(InputManager.GetAxisName(type, (InputSet)playerIndex));
 		}
 		#endregion
 	}

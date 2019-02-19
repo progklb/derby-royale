@@ -45,8 +45,8 @@ namespace DerbyRoyale.Gameplay
 			LocalPlayerConnect.onPlayerConnect += HandlePlayerConnect;
 			LocalPlayerConnect.onPlayerDisconnect += HandlePlayerDisconnect;
 
-			DerbyCar.onSpawn += HandlePlayerSpawn;
-			DerbyCar.onDeath += HandlePlayerDeath;
+			Vehicle.onSpawn += HandlePlayerSpawn;
+			Vehicle.onDeath += HandlePlayerDeath;
 		}
 
 		protected void OnDestroy()
@@ -54,8 +54,8 @@ namespace DerbyRoyale.Gameplay
 			LocalPlayerConnect.onPlayerConnect -= HandlePlayerConnect;
 			LocalPlayerConnect.onPlayerDisconnect -= HandlePlayerDisconnect;
 
-			DerbyCar.onSpawn -= HandlePlayerSpawn;
-			DerbyCar.onDeath -= HandlePlayerDeath;
+			Vehicle.onSpawn -= HandlePlayerSpawn;
+			Vehicle.onDeath -= HandlePlayerDeath;
 		}
 		#endregion
 
@@ -107,11 +107,11 @@ namespace DerbyRoyale.Gameplay
 			}
 		}
 
-		protected override void HandlePlayerSpawn(DerbyCar player)
+		protected override void HandlePlayerSpawn(Vehicle player)
 		{
 		}
 
-		protected override void HandlePlayerDeath(DerbyCar player)
+		protected override void HandlePlayerDeath(Vehicle player)
 		{
 			// TODO Handle
 			RaiseOnGameOver(GameOverCondition.LastSurvivor);
@@ -172,11 +172,11 @@ namespace DerbyRoyale.Gameplay
 
 		void SpawnPlayer(Player player)
 		{
+			// TODO Contact level controller for available spawn point - it must check for unoccupied positions.
 			var randomIdx = URandom.Range(0, levelController.currentStage.spawnPoints.Length);
 			var spawnPoint = levelController.currentStage.spawnPoints[randomIdx];
 
-			player.playerInstance = Instantiate(GameManager.instance.playerPrefab, spawnPoint.position, spawnPoint.rotation, transform);
-
+			player.SetVehicleInstance(Instantiate(GameManager.instance.playerPrefab, spawnPoint.position, spawnPoint.rotation, transform));
 			CameraManager.instance.Add(player);
 		}
 		
@@ -184,7 +184,9 @@ namespace DerbyRoyale.Gameplay
 		{
 			CameraManager.instance.Remove(player);
 
-			Destroy(player.playerInstance.gameObject);
+			Destroy(player.vehicleInstance.gameObject);
+
+			player.ClearVehicleInstance();
 		}
 		#endregion
 	}

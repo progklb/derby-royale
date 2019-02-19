@@ -15,7 +15,7 @@ namespace DerbyRoyale.Vehicles
 
 
         #region PROPERTIES
-        private DerbyCar owningDerbyCar { get => m_OwningDerbyCar; }
+        private Vehicle owningDerbyCar { get => m_OwningDerbyCar; }
         private ParticleSystem engineSmokeParticles { get => m_EngineSmokeParticles ?? (m_EngineSmokeParticles = GetComponent<ParticleSystem>()); }
         #endregion
 
@@ -23,7 +23,7 @@ namespace DerbyRoyale.Vehicles
         #region EDITOR FIELDS
         [Space(3), Header("HEALTH VISUALIZER SETUP"), Space(5)]
         [SerializeField]
-        private DerbyCar m_OwningDerbyCar;
+        private Vehicle m_OwningDerbyCar;
         #endregion
 
 

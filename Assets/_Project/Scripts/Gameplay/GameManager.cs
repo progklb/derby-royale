@@ -16,12 +16,12 @@ namespace DerbyRoyale.Gameplay
 
 		public GameState gameState { get => gameController?.gameState ?? GameState.Stopped; }
 
-		public DerbyCar playerPrefab { get => m_PlayerPrefab; }
+		public Vehicle playerPrefab { get => m_PlayerPrefab; }
 		#endregion
 
 
 		#region EDITOR FIELDS
-		[SerializeField] private DerbyCar m_PlayerPrefab;
+		[SerializeField] private Vehicle m_PlayerPrefab;
 
 		// TODO Instantiate a controller at runtime based on selected game mode.
 		[Header("For Development")]

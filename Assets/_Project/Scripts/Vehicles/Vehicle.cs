@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 
 using DerbyRoyale.Pickups;
+using DerbyRoyale.Players;
 
 using UInput = UnityEngine.Input;
 using URandom = UnityEngine.Random;
@@ -12,8 +13,8 @@ namespace DerbyRoyale.Vehicles
 {
     [RequireComponent(typeof(Rigidbody))]
     [RequireComponent(typeof(VehicleController))]
-    [AddComponentMenu("Derby Royale/Vehicles/Derby Car")]
-    public sealed class DerbyCar : MonoBehaviour
+    [AddComponentMenu("Derby Royale/Vehicles/Vehicle")]
+    public sealed class Vehicle : MonoBehaviour
     {
         #region CONSTANTS
         private const float DEFAULT_ACCELERATION = 1750f;
@@ -42,8 +43,8 @@ namespace DerbyRoyale.Vehicles
 
 
 		#region EVENTS
-		public static event Action<DerbyCar> onSpawn = delegate { };
-		public static event Action<DerbyCar> onDeath = delegate { };
+		public static event Action<Vehicle> onSpawn = delegate { };
+		public static event Action<Vehicle> onDeath = delegate { };
 		#endregion
 
 
@@ -70,6 +71,8 @@ namespace DerbyRoyale.Vehicles
         private bool hasPickup { get => currentPickup != null; set { hasPickup = value; } }
 
         private PickupBehaviour[] currentPickup { get; set; }
+
+		public Player player { get; private set; }
         #endregion
 
 
@@ -107,11 +110,18 @@ namespace DerbyRoyale.Vehicles
         {
             CrashCar(col);
         }
-        #endregion
+		#endregion
 
 
-        #region PUBLIC API
-        public void RestartCar()
+		#region PUBLIC API
+		public void Initialise(Player player)
+		{
+			this.player = player;
+
+			Debug.Log("!!!!");
+		}
+
+		public void RestartCar()
         {
             currentHealth = DEFAULT_HEALTH;
             rigidBody.drag = DEFAULT_DRAG;

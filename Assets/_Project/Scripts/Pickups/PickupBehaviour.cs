@@ -22,7 +22,7 @@ namespace DerbyRoyale.Pickups
 
 
         #region PUBLIC API
-        public virtual void UsePickup(DerbyCar owningDerbyCar)
+        public virtual void UsePickup(Vehicle owningDerbyCar)
         {
 
         }

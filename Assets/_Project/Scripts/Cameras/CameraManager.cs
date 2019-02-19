@@ -14,8 +14,9 @@ namespace DerbyRoyale.Cameras
 
 
 		#region PROPERTIES
+		/// Holds reference to all players that have been provided cameras.
 		private Dictionary<Player, FollowCamera> activeCameras { get; set; } = new Dictionary<Player, FollowCamera>();
-
+		/// A set of viewports for split-screen rendering.
 		private Rect[][] viewports { get; set; }
 		#endregion
 
@@ -36,7 +37,7 @@ namespace DerbyRoyale.Cameras
 			if (!activeCameras.ContainsKey(player))
 			{
 				var cam = Instantiate(m_FollowCameraPrefab, transform).GetComponent<FollowCamera>();
-				cam.followTarget = player.playerInstance.transform;
+				cam.followTarget = player.vehicleInstance.transform;
 
 				activeCameras.Add(player, cam);
 
@@ -58,6 +59,9 @@ namespace DerbyRoyale.Cameras
 
 
 		#region HELPER FUNCTIONS
+		/// <summary>
+		/// Creates a jagged array of viewports for split screen rendering.
+		/// </summary>
 		void CreateViewports()
 		{
 			var p1 = new Rect[] {
@@ -89,6 +93,10 @@ namespace DerbyRoyale.Cameras
 			viewports[3] = p4;
 		}
 
+		/// <summary>
+		/// Refreshes cameras based on the number of cameras registered,
+		/// and assigned viewports for split-screen rendering.
+		/// </summary>
 		void RefreshCameras()
 		{
 			if (activeCameras.Count > 0)
